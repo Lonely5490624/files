@@ -1,3 +1,24 @@
 .pLeft10{
     padding-left: 10px;
 }
+.department{
+    line-height: 30px;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px dashed #eeeeee;
+    .depName{
+    }
+    .depCtrl{
+        .depBtn{
+            border: 1px solid #eeeeee;
+            border-radius: 3px;
+            height: 30px;
+            padding: 0 10px;
+            cursor: pointer;
+            & + .depBtn{
+                margin-left: 15px;
+            }
+        }
+    }
+}

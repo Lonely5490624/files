@@ -1,21 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import bindAll from 'lodash.bindall'
+
+import styles from './modify-dep-box.module.scss'
 import ajax from '../../utils/ajax'
-import { connect } from 'react-redux'
 
-import styles from './create-dir-box.module.scss'
-
-class CreateDirBox extends React.PureComponent{
+class ModifyDepBox extends React.PureComponent{
     constructor() {
         super()
         this.state = {
             new_name: ''
         }
-
         bindAll(this, [
             'handleInputChange',
-            'handleCreateDir'
+            'handleModifyDir'
         ])
     }
     handleInputChange(e) {
@@ -23,26 +21,28 @@ class CreateDirBox extends React.PureComponent{
             new_name: e.target.value
         })
     }
-    async handleCreateDir() {
+    async handleModifyDir() {
         let params = {
-            dir_name: this.state.new_name,
-            dir_pid: this.props.currentDir
+            dep_id: this.props.dep.dep_id,
+            new_name: this.state.new_name
         }
-        let result = await ajax.post('files/addDir', params)
+        let result = await ajax.post('users/updateDepartment', params)
         if (result.code === 0) {
             this.props.onClose()
+            console.log(this.props)
             this.props.onDone && this.props.onDone()
         }
     }
     render() {
         const {
+            dep,
             onClose
         } = this.props
         const dom = (
             <div className={styles.cover}>
                 <div className={styles.box}>
-                    <input type="text" value={this.state.new_name} onChange={this.handleInputChange} placeholder="请输入目录名称" />
-                    <button onClick={this.handleCreateDir}>新建</button>
+                    <input type="text" value={this.state.new_name || dep.dep_name} onChange={this.handleInputChange} placeholder="请输入部门名称" />
+                    <button onClick={this.handleModifyDir}>修改</button>
                     <div className={styles.close} onClick={onClose}></div>
                 </div>
             </div>
@@ -54,10 +54,4 @@ class CreateDirBox extends React.PureComponent{
     }
 }
 
-const mapStateToProps = state => ({
-    currentDir: state.file.dir_id
-})
-
-export default connect(
-    mapStateToProps
-)(CreateDirBox)
+export default ModifyDepBox

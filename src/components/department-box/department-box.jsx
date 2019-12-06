@@ -39,7 +39,7 @@ class DepartmentBox extends React.PureComponent{
                 <div className={styles.box}>
                     <div className={styles.header}>部门设置</div>
                     <div className={styles.content}>
-                        <DepartmentTree item={this.state.depList} />
+                        <DepartmentTree item={this.state.depList} onDone={this.handleGetDirList} />
                     </div>
                     <div className={styles.close} onClick={onClose}></div>
                 </div>
