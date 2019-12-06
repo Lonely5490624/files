@@ -12,9 +12,9 @@ ajax.interceptors.request.use(config => {
 })
 
 ajax.interceptors.response.use(response => {
-    // if (response.data.code === 1003) {
-    //     window.location.href = '/login'
-    // }
+    if (response.data.code === 1003) {
+        window.location.href = '/login'
+    }
     return response.data
 }, error => {
     console.log(error)
