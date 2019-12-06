@@ -1,0 +1,131 @@
+@import "../../styles/Mixin.scss";
+.navLeft {
+    background: #141414;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+    min-width: 180px;
+    display: flex;
+    *{
+        display: flex;
+    }
+
+    &.hasMax {
+        max-width: 240px;
+    }
+
+    .fileTree {
+        flex-direction: column;
+        flex: 1;
+        overflow: auto;
+        height: auto;
+
+        ul {
+            flex-direction: column;
+
+            li {
+                ul {
+                    display: none;
+                }
+
+                ul.show {
+                    display: flex;
+                }
+
+                flex-direction: column;
+
+                dl {
+                    flex-direction: row;
+                    color: #fff;
+
+                    dt {
+                        width: 20px;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: row;
+
+                    }
+
+                    dd {
+                        flex: 1;
+                        height: 40px;
+                        align-items: center;
+                        white-space: nowrap;
+                        
+                        padding-right: 10px;
+
+                        span {
+                            flex: 1;
+                        }
+
+                        em {
+                            position: relative;
+                            width: 20px;
+                            height: 20px;
+                            align-items: center;
+                            i {
+                                width: 0;
+                                height: 0;
+                                border-top: 4px solid transparent;
+                                border-bottom: 4px solid transparent;
+                                border-right: 6px solid #06c2cc;
+                            }
+
+                            ul {
+                                @include layerOut;
+                                right: 0;
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                li{
+                                    color: #666;
+                                }
+                            }
+
+                            ul.show ul.active{
+                                display: flex;
+    
+                                flex-direction: column;
+                            }
+                        }
+
+                    }
+
+                    /* &:hover {
+                        background: #fff;
+                        color: #666;
+                    } */
+                }
+            }
+
+        }
+
+    }
+
+    .ctrBar {
+        position: absolute;
+        right: 0;
+        width: 10px;
+        height: 100%;
+        background: #eee;
+        justify-content: center;
+        align-items: center;
+
+        div {
+            flex: 1;
+            height: 80px;
+            background: #fff;
+            justify-content: center;
+            align-items: center;
+
+            span {
+                width: 0;
+                height: 0;
+                border-top: 6px solid transparent;
+                border-bottom: 6px solid transparent;
+                border-right: 6px solid #06c2cc;
+            }
+        }
+
+    }
+}
