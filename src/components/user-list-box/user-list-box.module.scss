@@ -7,10 +7,10 @@
     background-color: rgba(0,0,0,.5);
     .box{
         position: absolute;
-        top: 50px;
-        bottom: 50px;
-        left: 200px;
-        right: 200px;
+        width: 300px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         background-color: #fff;
         border-radius: 8px;
         .header{

@@ -1,0 +1,26 @@
+.jobItem{
+    line-height: 30px;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px dashed #eeeeee;
+    .jobName{
+        color: #00f;
+    }
+    .jobCtrl{
+        .jobBtn{
+            border: 1px solid #eeeeee;
+            border-radius: 3px;
+            height: 30px;
+            padding: 0 10px;
+            cursor: pointer;
+            & + .jobBtn{
+                margin-left: 15px;
+            }
+        }
+    }
+}
+
+.pLeft20{
+    padding-left: 20px;
+}

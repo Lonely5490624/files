@@ -7,23 +7,27 @@
     background-color: rgba(0,0,0,.5);
     .box{
         position: absolute;
-        top: 50px;
-        bottom: 50px;
-        left: 200px;
-        right: 200px;
+        width: 300px;
         background-color: #fff;
         border-radius: 8px;
-        .header{
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        text-align: center;
+        input{
             width: 100%;
-            font-weight: bold;
-            line-height: 40px;
-            border-bottom: 1px solid #eeeeee;
-            text-align: center;
+            height: 34px;
+            border: 1px solid #eeeeee;
+            margin-top: 10px;
         }
-        .content{
-            padding: 15px;
-            height: calc(100% - 41px);
-            overflow-y: auto;
+        button{
+            width: 80px;
+            height: 34px;
+            border: 1px solid #eeeeee;
+            border-radius: 3px;
+            margin-top: 30px;
+            cursor: pointer;
         }
         .close{
             width: 16px;

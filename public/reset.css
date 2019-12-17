@@ -39,7 +39,7 @@ section {
     box-sizing: border-box;
 }
 /* div,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,em,span,i,input,textarea,button,select{display: flex;} */
-input,
+input[type="text"],
 textarea,
 button,
 select,
@@ -52,6 +52,10 @@ i {
     background: none;
     font-size: inherit;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+input[type="text"],
+input[type="password"] {
+    text-indent: 8px;
 }
 
 ul,

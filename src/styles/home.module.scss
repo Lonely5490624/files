@@ -29,6 +29,10 @@
             justify-content: flex-end;
             li{
                 color: #fff;
+                cursor: pointer;
+            }
+            li + li{
+                margin-left: 20px;
             }
         }
     }

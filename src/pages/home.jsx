@@ -91,13 +91,13 @@ class Home extends React.Component{
                         <ul>
                             <li>菜单1</li>
                             <li onClick={this.handleShowDepartmnet}>部门设置</li>
+                            <li onClick={this.handleLogout}>注销</li>
                         </ul>
                     </div>
                     <div className={styles.contentBody}>
                         <Nav type={"fileTree"} data={this.state.dirList} onDirClick={this.handleClickDir} />
                         <div className={styles.contentMain}>
                             <FileList fileList={this.state.fileList} uploadDone={this.handleClickDir} />
-                            <button onClick={this.handleLogout}>注销</button>
                         </div>
                     </div>
                 </div>

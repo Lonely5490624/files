@@ -100,7 +100,7 @@ class FileList extends React.PureComponent{
                                     <div className={styles.fileItem} key={item.file_id}>
                                         <div className={styles.fileName}>{item.file_name}</div>
                                         <div className={styles.fileControl}>
-                                            <div className={classnames(styles.fileBtn, styles.fileModify)} onClick={this.handleOpenModifyBox.bind(this, item)}>修改</div>
+                                            <div className={classnames(styles.fileBtn, styles.fileModify)} onClick={this.handleOpenModifyBox.bind(this, item)}>重命名</div>
                                             <div className={classnames(styles.fileBtn, styles.fileDelete)} onClick={this.handleFileDelete.bind(this, item.file_id)}>删除</div>
                                         </div>
                                     </div>
