@@ -11,8 +11,6 @@ class CreateUserBox extends React.PureComponent{
         this.state = {
             username: '',
             password: '123456',
-            dep_id: 0,
-            job_id: 0,
             job_number: '',
             phone_number: '',
             true_name: '',
@@ -22,8 +20,6 @@ class CreateUserBox extends React.PureComponent{
         bindAll(this, [
             'handleInputUsername',
             'handleInputPassword',
-            'handleInputDepId',
-            'handleInputJobId',
             'handleInputJobNumber',
             'handleInputPhoneNumber',
             'handleInputTrueName',
@@ -40,18 +36,6 @@ class CreateUserBox extends React.PureComponent{
     handleInputPassword(e) {
         this.setState({
             password: e.target.value
-        })
-    }
-    handleInputDepId(e) {
-        const select = e.target
-        this.setState({
-            dep_id: +select.options[select.selectedIndex].value
-        })
-    }
-    handleInputJobId(e) {
-        const select = e.target
-        this.setState({
-            job_id: +select.options[select.selectedIndex].value
         })
     }
     handleInputJobNumber(e) {
@@ -81,11 +65,25 @@ class CreateUserBox extends React.PureComponent{
     }
     // 创建用户
     async handleCreateUser() {
-        let params = {
+        const params = {
+            username: this.state.username,
+            password: this.state.password,
+            dep_id: this.props.depItem.dep_id,
+            job_id: this.props.jobItem.job_id,
+            job_number: this.state.job_number,
+            phone_number: this.state.phone_number,
+            true_name: this.state.true_name,
+            nick_name: this.state.nick_name,
+            ID_card: this.state.ID_card
+        }
+        const result = await ajax.post('users/regUserStaff', params)
+        if (result.code === 0) {
+            this.props.onDone && this.props.onDone()
         }
     }
     render() {
         const {
+            depItem,
             jobItem,
             onClose
         } = this.props
@@ -108,21 +106,13 @@ class CreateUserBox extends React.PureComponent{
                         <div className={styles.formItem}>
                             <div className={styles.formItemLabel}>部门</div>
                             <div className={styles.formItemInput}>
-                                <select onChange={this.handleInputDepId}>
-                                    <option value="1">总部</option>
-                                    <option value="2">技术部</option>
-                                    <option value="3">总部</option>
-                                </select>
+                                <input type="text" value={depItem.dep_name} readOnly/>
                             </div>
                         </div>
                         <div className={styles.formItem}>
                             <div className={styles.formItemLabel}>岗位</div>
                             <div className={styles.formItemInput}>
-                                <select onChange={this.handleInputJobId}>
-                                    <option value="1">前端岗</option>
-                                    <option value="2">后端岗</option>
-                                    <option value="3">设计岗</option>
-                                </select>
+                                <input type="text" value={jobItem.job_name} readOnly/>
                             </div>
                         </div>
                         <div className={styles.formItem}>

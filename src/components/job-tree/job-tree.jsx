@@ -26,6 +26,7 @@ class JobTree extends React.PureComponent{
             'handleCloseUsers',
             'handleOpenAddUsers',
             'handleCloseAddUsers',
+            'handleDoneAddUsers',
             'handleOpenModifyJob',
             'handleCloseModifyJob'
         ])
@@ -66,6 +67,14 @@ class JobTree extends React.PureComponent{
             currentJob: null
         })
     }
+    // 新增人员完成
+    handleDoneAddUsers() {
+        this.setState({
+            addUserBox: false,
+            currentJob: null
+        })
+        this.handleCloseAddUsers()
+    }
     // 打开修改岗位弹窗
     handleOpenModifyJob(item) {
         this.setState({
@@ -84,9 +93,10 @@ class JobTree extends React.PureComponent{
         this.handleGetJobList()
     }
     render() {
-        let {
+        const {
             jobList
         } = this.state
+        const { depItem } = this.props
         return (
             <>
                 {
@@ -106,7 +116,7 @@ class JobTree extends React.PureComponent{
                 }
                 {this.state.userBox && <UserListBox jobItem={this.state.currentJob} onClose={this.handleCloseUsers} />}
                 {this.state.modifyJobBox && <ModifyJobBox jobItem={this.state.currentJob} onClose={this.handleCloseModifyJob} />}
-                {this.state.addUserBox && <CreateUserBox jobItem={this.state.currentJob} onClose={this.handleCloseAddUsers} />}
+                {this.state.addUserBox && <CreateUserBox depItem={depItem} jobItem={this.state.currentJob} onClose={this.handleCloseAddUsers} onDone={this.handleDoneAddUsers} />}
             </>            
         )
     }

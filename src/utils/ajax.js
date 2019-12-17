@@ -24,7 +24,8 @@ ajax.interceptors.request.use(config => {
 })
 
 ajax.interceptors.response.use(response => {
-    if (response.data.code === 1003) {
+    if (response.data.code === 1001) {
+        localStorage.removeItem('token')
         window.location.href = '/login'
     }
     return response.data

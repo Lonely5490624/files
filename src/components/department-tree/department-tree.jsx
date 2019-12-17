@@ -98,7 +98,7 @@ class DepartmentTree extends React.PureComponent{
                                     null
                                 }
                             </div>
-                            <JobTree depId={ele.dep_id} />
+                            <JobTree depItem={ele} depId={ele.dep_id} />
                         </div>
                     )) :
                     null

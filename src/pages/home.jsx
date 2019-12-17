@@ -15,6 +15,7 @@ class Home extends React.Component{
     constructor() {
         super()
         this.state = {
+            depSet: 0,
             departmentBox: false,
             dirList: {
                 menu: []
@@ -29,6 +30,7 @@ class Home extends React.Component{
             'handleGetShareDirList',
             'handleClickDir',
             'handleLogout',
+            'getCurrentJob'
         ])
     }
     // 打开部门设置
@@ -74,7 +76,17 @@ class Home extends React.Component{
             this.props.history.replace('/login')
         }
     }
+    // 查询当前岗位信息，能否设置部门
+    async getCurrentJob() {
+        const result = await ajax.get('users/canSetDep')
+        if (result.code === 0) {
+            this.setState({
+                depSet: result.data
+            })
+        }
+    }
     async componentWillMount() {
+        await this.getCurrentJob()
         await this.handleGetDirList()
         await this.handleGetShareDirList()
         this.setState({
@@ -90,7 +102,7 @@ class Home extends React.Component{
                     <div className={styles.navTop}>
                         <h1>logo</h1>
                         <ul>
-                            <li onClick={this.handleShowDepartmnet}>部门设置</li>
+                            {this.state.depSet ? <li onClick={this.handleShowDepartmnet}>部门设置</li> : null}
                             <li onClick={this.handleLogout}>注销</li>
                         </ul>
                     </div>

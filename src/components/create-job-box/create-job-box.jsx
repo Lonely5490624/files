@@ -10,6 +10,8 @@ class CreateJobBox extends React.PureComponent{
         super()
         this.state = {
             job_name: '',
+            isManager: false,
+            depSet: false,
             isCreateUser: false,
             isModifyUserInfo: false,
             isModifyPassword: false,
@@ -24,6 +26,8 @@ class CreateJobBox extends React.PureComponent{
 
         bindAll(this, [
             'handleInputChange',
+            'handleInputManager',
+            'handleInputDepSet',
             'handleInputCreateUser',
             'handleInputModifyUserInfo',
             'handleInputModifyPassword',
@@ -40,6 +44,18 @@ class CreateJobBox extends React.PureComponent{
     handleInputChange(e) {
         this.setState({
             job_name: e.target.value
+        })
+    }
+    // 是否管理者
+    handleInputManager(e) {
+        this.setState({
+            isManager: e.target.checked
+        })
+    }
+    // 能否设置部门
+    handleInputDepSet(e) {
+        this.setState({
+            depSet: e.target.checked
         })
     }
     // 能否创建用户
@@ -107,6 +123,8 @@ class CreateJobBox extends React.PureComponent{
         let params = {
             dep_id: this.props.dep.dep_id,
             job_name: this.state.job_name,
+            is_manager: this.state.isManager,
+            dep_set: this.state.depSet,
             create_user: this.state.isCreateUser,
             modify_userinfo: this.state.isModifyUserInfo,
             modify_password: this.state.isModifyPassword,
@@ -134,6 +152,8 @@ class CreateJobBox extends React.PureComponent{
                 <div className={styles.box}>
                     <p className={styles.p1}>上级部门：<span>{dep.dep_name}</span></p>
                     <input type="text" value={this.state.job_name} onChange={this.handleInputChange} placeholder="请输入岗位名称" />
+                    <label><input type="checkbox" checked={this.state.isManager} onChange={this.handleInputManager}/>管理者</label>
+                    <label><input type="checkbox" checked={this.state.depSet} onChange={this.handleInputDepSet}/>设置部门</label>
                     <label><input type="checkbox" checked={this.state.isCreateUser} onChange={this.handleInputCreateUser}/>创建用户</label>
                     <label><input type="checkbox" checked={this.state.isModifyUserInfo} onChange={this.handleInputModifyUserInfo}/>修改用户信息</label>
                     <label><input type="checkbox" checked={this.state.isModifyPassword} onChange={this.handleInputModifyPassword}/>修改用户密码</label>
