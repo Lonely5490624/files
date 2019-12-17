@@ -1,13 +1,25 @@
 import axios from 'axios'
 
 let ajax = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'http://localhost:3333/api',
     timeout: 10000
 })
 
 ajax.defaults.withCredentials = true
 
 ajax.interceptors.request.use(config => {
+    const token = localStorage.getItem('token')
+    if (config.method === 'post') {
+        let data = config.data || {}
+        data.token = token
+        config.data = data
+    } else if (config.method === 'get') {
+        if (config.url.includes('?')) {
+            config.url += `&token=${token}`
+        } else {
+            config.url += `?token=${token}`
+        }
+    }
     return config
 })
 

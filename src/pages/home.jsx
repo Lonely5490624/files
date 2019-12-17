@@ -70,6 +70,7 @@ class Home extends React.Component{
     async handleLogout () {
         let result = await ajax.post('users/logout')
         if (result.code === 0) {
+            localStorage.removeItem('token')
             this.props.history.replace('/login')
         }
     }
@@ -89,7 +90,6 @@ class Home extends React.Component{
                     <div className={styles.navTop}>
                         <h1>logo</h1>
                         <ul>
-                            <li>菜单1</li>
                             <li onClick={this.handleShowDepartmnet}>部门设置</li>
                             <li onClick={this.handleLogout}>注销</li>
                         </ul>

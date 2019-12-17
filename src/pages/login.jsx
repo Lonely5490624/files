@@ -30,6 +30,7 @@ export default class Login extends React.Component{
         ajax.post('users/login', data)
             .then(res => {
                 if (res.code === 0) {
+                    localStorage.setItem('token', res.data.token)
                     this.props.history.replace('/home')
                 }
             })
