@@ -4,9 +4,11 @@ import bindAll from 'lodash.bindall'
 import { connect } from 'react-redux'
 import { listToTree } from '../utils/tools'
 import { setCurrentDir } from '../reducers/file'
+import { setDirIsShare } from '../reducers/dir'
 
 import Nav from '../components/Nav/Nav'
 import FileList from '../components/file-list/files-list'
+import FileListShare from '../components/file-list-share/files-list-share'
 import DepartmentBox from '../components/department-box/department-box'
 
 import styles from '../styles/home.module.scss'
@@ -56,13 +58,15 @@ class Home extends React.Component{
     async handleGetShareDirList() {
         let result = await ajax.get('files/getShareDir')
         if(result.code === 0) {
-            this.menu.push(...listToTree(result.data))
+            this.menu.push(...listToTree(result.data, true))
         }
     }
     // 点击左侧目录事件
-    async handleClickDir(id) {
-        this.props.setCurrentDir(id)
-        let result = await ajax.get(`files/getFileWithDirId?dir_id=${id}`)
+    async handleClickDir(id, isShare) {
+        await this.props.setCurrentDir(id)
+        await this.props.setDirIsShare(isShare)
+        const url = this.props.isShare ? `files/getShareFileWithDirId?dir_id=${id}` : `files/getFileWithDirId?dir_id=${id}`
+        let result = await ajax.get(url)
         if (result.code === 0) {
             this.setState({
                 fileList: result.data
@@ -109,7 +113,11 @@ class Home extends React.Component{
                     <div className={styles.contentBody}>
                         <Nav type={"fileTree"} data={this.state.dirList} onDirClick={this.handleClickDir} />
                         <div className={styles.contentMain}>
-                            <FileList fileList={this.state.fileList} uploadDone={this.handleClickDir} />
+                            {
+                                this.props.isShare ? 
+                                <FileListShare fileList={this.state.fileList} cancelDone={this.handleClickDir} /> :
+                                <FileList fileList={this.state.fileList} uploadDone={this.handleClickDir} />
+                            }
                         </div>
                     </div>
                 </div>
@@ -120,11 +128,13 @@ class Home extends React.Component{
 }
 
 const mapStateToProps = (state) => ({
-    currentDir: state.file.dir_id
+    currentDir: state.file.dir_id,
+    isShare: state.dir.isShare
 })
 
 const mapDispatchToProps = dispatch => ({
-    setCurrentDir: id => dispatch(setCurrentDir(id))
+    setCurrentDir: id => dispatch(setCurrentDir(id)),
+    setDirIsShare: isShare => dispatch(setDirIsShare(isShare))
 })
 
 export default connect(

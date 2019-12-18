@@ -50,8 +50,8 @@ class Nav extends React.Component {
             className === "" ? e.target.childNodes[1].className = "show" : e.target.childNodes[1].className = "";
         }
     }
-    handleToRoute(id) {
-        this.props.onDirClick(id)
+    handleToRoute(id, isShare) {
+        this.props.onDirClick(id, isShare)
     }
 
     createTree(data, type) {
@@ -65,7 +65,7 @@ class Nav extends React.Component {
                 <dl style={{ paddingLeft: item.depth * 10 }}>
                     <dt onClick={item.menu ? this.handleToggle : null}>{item.menu ? "+" : ""}</dt>
                     <dd>
-                        <span onClick={this.handleToRoute.bind(this, item.id)}>{item.name}</span>
+                        <span onClick={this.handleToRoute.bind(this, item.id, item.isShare)}>{item.name}</span>
                         {type === "fileTree" ?
                             <em onClick={this.handleCtrToggle.bind(this)}>
                                 <i></i>

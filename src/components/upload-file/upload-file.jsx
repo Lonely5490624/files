@@ -27,10 +27,12 @@ class UploadFile extends React.PureComponent{
         let params = new FormData()
         params.append('file', this.state.file)
         params.append('dir_id', this.props.currentDir)
+        params.append('token', localStorage.getItem('token'))
         let config = {
             header: {'Content-Type': 'multipart/form-data'}
         }
-        let result = await ajax.post('files/uploadFile', params, config)
+        let url = this.props.isShare ? 'files/uploadFileShare' : 'files/uploadFile'
+        let result = await ajax.post(url, params, config)
         if (result.code === 0) {
             this.props.onClose()
             this.props.onDone && this.props.onDone()
@@ -57,7 +59,8 @@ class UploadFile extends React.PureComponent{
 }
 
 const mapStateToProps = state => ({
-    currentDir: state.file.dir_id
+    currentDir: state.file.dir_id,
+    isShare: state.dir.isShare
 })
 
 export default connect(

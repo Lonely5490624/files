@@ -1,4 +1,4 @@
-const listToTree = function (list, depth = 1) {
+const listToTree = function (list, isShare, depth = 1) {
     let arr = []
     list.forEach(item => {
         let newItem = {
@@ -6,9 +6,10 @@ const listToTree = function (list, depth = 1) {
             name: item.dir_name,
             depth: depth
         }
+        if (isShare) newItem.isShare = true
 
         if (item.children && item.children.length) {
-            newItem.menu = [...listToTree(item.children, depth + 1)]
+            newItem.menu = [...listToTree(item.children, isShare, depth + 1)]
         }
         arr.push(newItem)
     });
