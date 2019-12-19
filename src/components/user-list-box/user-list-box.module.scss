@@ -24,6 +24,24 @@
             padding: 15px;
             height: calc(100% - 41px);
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            &>div{
+                display: flex;
+                flex-direction: row;
+                justify-content:space-between;
+                ul{
+                    display: flex;
+                    flex-direction: row;
+                    li{
+                        margin-left: 10px;
+                        &:first-child{
+                            margin: 0;
+                        }
+                    }
+                    
+                }
+            }
         }
         .close{
             width: 16px;
@@ -34,6 +52,8 @@
             background-color: rgba(0,0,0,.5);
             border-radius: 50%;
             cursor: pointer;
+
+           
         }
     }
 }

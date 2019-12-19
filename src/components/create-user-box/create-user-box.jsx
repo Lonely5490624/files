@@ -10,12 +10,12 @@ class CreateUserBox extends React.PureComponent{
         super()
         this.state = {
             username: '',
-            password: '123456',
+            password: '',
             job_number: '',
             phone_number: '',
             true_name: '',
             nick_name: '',
-            ID_card: ''
+            ID_card: '',
         }
         bindAll(this, [
             'handleInputUsername',
@@ -64,6 +64,22 @@ class CreateUserBox extends React.PureComponent{
         })
     }
     // 创建用户
+    componentDidMount(){
+        let {isUpdate,userInfo} = this.props;
+        ajax.get('users/getDepartment').then(res=>{
+            console.log(res)
+        })
+        if(isUpdate){
+            this.setState({
+                username: userInfo.username,
+                job_number: userInfo.job_number,
+                phone_number: userInfo.phone_number,
+                true_name: userInfo.true_name,
+                nick_name: userInfo.nick_name,
+                ID_card: userInfo.ID_card
+            })
+        }
+    }
     async handleCreateUser() {
         const params = {
             username: this.state.username,
@@ -85,7 +101,8 @@ class CreateUserBox extends React.PureComponent{
         const {
             depItem,
             jobItem,
-            onClose
+            onClose,
+            isUpdate
         } = this.props
         const dom = (
             <div className={styles.cover}>
@@ -145,7 +162,7 @@ class CreateUserBox extends React.PureComponent{
                                 <input type="text" placeholder="请输入身份证号码" maxLength="18" value={this.state.ID_card} onChange={this.handleInputIDCard}/>
                             </div>
                         </div>
-                        <button onClick={this.handleCreateUser}>创建</button>
+                        <button onClick={this.handleCreateUser}>{isUpdate?"修改":"创建"}</button>
                     </div>
                     <div className={styles.close} onClick={onClose}></div>
                 </div>

@@ -13,7 +13,25 @@
     &.hasMax {
         max-width: 240px;
     }
-
+    &.hide{
+        min-width: 10px;
+        .fileTree{
+            display: none;
+        }
+        .ctrBar div span{
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right:none;
+            border-left: 6px solid #06c2cc;
+        }
+        .ctrBar div:hover{
+            background: #06c2cc;
+            span{
+                border-right:none;
+                border-left:6px solid #fff
+            }
+        }
+    }
     .fileTree {
         flex-direction: column;
         flex: 1;
@@ -91,15 +109,17 @@
 
                     }
 
-                    /* &:hover {
-                        background: #fff;
-                        color: #666;
-                    } */
+                    &:hover ,& .active{
+                        color: #f90;
+                    }
+                    
                 }
             }
 
         }
-
+        &.hide{
+            display: none;
+        }
     }
 
     .ctrBar {
@@ -126,6 +146,11 @@
                 border-right: 6px solid #06c2cc;
             }
         }
-
+        &:hover div{
+            background: #06c2cc;
+            span{
+                border-right:6px solid #fff
+            }
+        }
     }
 }

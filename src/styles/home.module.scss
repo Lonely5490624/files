@@ -3,7 +3,6 @@
     flex-direction: column;
     flex: 1;
     overflow: hidden;
-    height: 100%;
     .navTop{
         display: flex;
         height: 60px;
@@ -37,18 +36,24 @@
         }
     }
     .contentBody{
-        height: calc(100% - 60px);
+        flex: 1;
         display: flex;
         background: #eee;
+
         .navLeft{
             height: 100%;
         }
+
         .contentMain{
-            flex: 1;
+           flex: 1;
             margin: 20px;
             margin-left: 10px;
-            background: #fff;
+            display: flex;
             overflow: hidden;
+            flex-direction: column;
+            .dir{
+                display: flex;
+            }
         }
     }
 }

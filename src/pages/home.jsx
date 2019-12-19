@@ -22,7 +22,8 @@ class Home extends React.Component{
             dirList: {
                 menu: []
             },
-            fileList: null
+            fileList: null,
+            dirs:["1","2","3"]
         }
         this.menu = []
         bindAll(this, [
@@ -62,11 +63,30 @@ class Home extends React.Component{
         }
     }
     // 点击左侧目录事件
-    async handleClickDir(id, isShare) {
-        await this.props.setCurrentDir(id)
+    async handleClickDir(item, isShare) {
+        await this.props.setCurrentDir(item.id)
         await this.props.setDirIsShare(isShare)
-        const url = this.props.isShare ? `files/getShareFileWithDirId?dir_id=${id}` : `files/getFileWithDirId?dir_id=${id}`
-        let result = await ajax.get(url)
+        const url = this.props.isShare ? `files/getShareFileWithDirId?dir_id=${item.id}` : `files/getFileWithDirId?dir_id=${item.id}`
+        let result = await ajax.get(url);
+        let dirArr=[]
+        console.log(item)
+        /* console.log("item",item);
+        console.log("this",this.menu); */
+        let arrs=[]
+        let getDir = (dataArr)=>{
+            dataArr.map((i)=>{
+
+                if(item.dir_pid == i.id){
+                    dirArr.push(i.name)
+                }
+                if(i.menu&&i.menu.length>0){
+                    getDir(i.menu)
+                }
+                arrs.push(i);
+            })
+        }
+        getDir(this.menu);
+        console.log(dirArr)
         if (result.code === 0) {
             this.setState({
                 fileList: result.data
@@ -100,6 +120,7 @@ class Home extends React.Component{
         })
     }
     render() {
+        let {dirs} = this.state;
         return (
             <>
                 <div className={styles.home}>
@@ -113,6 +134,11 @@ class Home extends React.Component{
                     <div className={styles.contentBody}>
                         <Nav type={"fileTree"} data={this.state.dirList} onDirClick={this.handleClickDir} />
                         <div className={styles.contentMain}>
+                            <div className={styles.dir}>
+                                {dirs.map((i,index)=>{
+                                return (<li key={index}>{i}<span>></span></li>)
+                                })}
+                            </div>
                             {
                                 this.props.isShare ? 
                                 <FileListShare fileList={this.state.fileList} cancelDone={this.handleClickDir} /> :

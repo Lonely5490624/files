@@ -8,11 +8,14 @@ class Nav extends React.Component {
         this.handleToggle = this.handleToggle.bind(this);
         this.navMouseOver = this.navMouseOver.bind(this);
         this.navMouseLeave = this.navMouseLeave.bind(this);
-        this.handleDomClick= this.handleDomClick.bind(this)
+        this.handleDomClick= this.handleDomClick.bind(this);
+        this.handleNavToggle = this.handleNavToggle.bind(this);
+
         document.addEventListener("click",this.handleDomClick)
         this.state = {
             data: nav,
             hasMax: true,
+            navShow:true
         }
 
     }
@@ -50,10 +53,20 @@ class Nav extends React.Component {
             className === "" ? e.target.childNodes[1].className = "show" : e.target.childNodes[1].className = "";
         }
     }
-    handleToRoute(id, isShare) {
-        this.props.onDirClick(id, isShare)
+    handleToRoute(item, isShare,e) {
+        if(document.getElementsByClassName("active")[0]){
+            document.getElementsByClassName("active")[0].className="";
+        }
+        
+        e.target.className = "active";
+        this.props.onDirClick(item, isShare);
     }
-
+    handleNavToggle(){
+        let {navShow} =this.state;
+        this.setState({
+            navShow:!navShow
+        })
+    }
     createTree(data, type) {
         let list = [];
         data.menu.map((item, index) => {
@@ -65,8 +78,8 @@ class Nav extends React.Component {
                 <dl style={{ paddingLeft: item.depth * 10 }}>
                     <dt onClick={item.menu ? this.handleToggle : null}>{item.menu ? "+" : ""}</dt>
                     <dd>
-                        <span onClick={this.handleToRoute.bind(this, item.id, item.isShare)}>{item.name}</span>
-                        {type === "fileTree" ?
+                        <span className={""} onClick={this.handleToRoute.bind(this, item, item.isShare)}>{item.name}</span>
+                        {/* {type === "fileTree" ?
                             <em onClick={this.handleCtrToggle.bind(this)}>
                                 <i></i>
                                 <ul>
@@ -77,7 +90,7 @@ class Nav extends React.Component {
                             </em>
                             :
                             ""
-                        }
+                        } */}
                     </dd>
                 </dl>
                 {next}
@@ -97,17 +110,18 @@ class Nav extends React.Component {
         })
     }
     render() {
-        let { hasMax } = this.state;
+        let { hasMax ,navShow} = this.state;
         let { data, type } = this.props;
 
         hasMax = hasMax ? " hasMax" : "";
+        navShow = navShow?"":" hide"
         return (
-            <div className={"navLeft" + hasMax} onMouseLeave={this.navMouseLeave}>
+            <div className={"navLeft" +  hasMax + navShow} onMouseLeave={this.navMouseLeave}>
                 <div className={type} onMouseEnter={this.navMouseOver}>
                     {this.createTree(data, type)}
                 </div>
                 <div className="ctrBar" ref="ctrBar" >
-                    <div>
+                    <div onClick={this.handleNavToggle}>
                         <span></span>
                     </div>
                 </div>
