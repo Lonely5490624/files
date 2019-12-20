@@ -16,7 +16,8 @@ class FileList extends React.PureComponent {
         this.state = {
             uploadBox: false,
             modifyBox: false,
-            currentFile: null
+            currentFile: null,
+            isRename:false
         }
 
         bindAll(this, [
@@ -30,7 +31,9 @@ class FileList extends React.PureComponent {
             'handleCollect',
             'handleFileDelete',
             'handleOpenModifyBox',
-            'handleCloseModifyBox'
+            'handleCloseModifyBox',
+            'handleRename',
+            'handleDeleteDir'
         ])
     }
     // 打开上传文件的弹窗
@@ -47,13 +50,18 @@ class FileList extends React.PureComponent {
     }
     // 打开新建目录的弹窗
     handleOpenCreateDir() {
+
         this.setState({
+            isRename:false,
             createDir: true
         })
     }
-    // 打开新建目录的弹窗
+    // 关闭开新建目录的弹窗
     handleCloseCreateDir() {
+        console.log("aaaaaa",this.props.uploadDone)
+        this.props.refreDir()
         this.setState({
+            isRename:false,
             createDir: false
         })
     }
@@ -84,11 +92,12 @@ class FileList extends React.PureComponent {
     // 收藏文件
     async handleCollect(id,type) {
         const params = {
-            file_id: id
+            file_id: id+""
         }
         const result = type&&type=="cancel"?await ajax.post('files/cancelCollect', params):await ajax.post('files/collectFile', params)
         if (result.code === 0) {
-            this.props.uploadDone && this.props.uploadDone(this.props.currentDir)
+            
+            this.props.uploadDone && this.props.uploadDone(this.props.currentDir,type&&type=="cancel"?1:null)
         }
     }
     // 删除文件
@@ -114,11 +123,21 @@ class FileList extends React.PureComponent {
             modifyBox: false
         })
     }
+    handleRename(){
+        this.setState({
+            isRename:true,
+            createDir: true
+        })
+    }
+    handleDeleteDir(){
+
+    }
     render() {
         let {
             fileList,
             dirData
         } = this.props
+        let {isRename} = this.state
         return (
             <div className={styles.filePage}>
                 {
@@ -127,10 +146,10 @@ class FileList extends React.PureComponent {
                             <button onClick={this.handleOpenUploadBox}>上传文件</button>
                             <button onClick={this.handleOpenCreateDir}>新建目录</button>
                             {
-                                dirData && dirData.can_delete ? <button >修改目录</button> : null
+                                dirData && dirData.can_delete ? <button onClick={this.handleRename}>修改目录</button> : null
                             }
                             {
-                                dirData && dirData.can_delete ? <button >删除目录</button> : null
+                                dirData && dirData.can_delete ? <button onClick={this.handleDeleteDir}>删除目录</button> : null
                             }
                         </div> :
                         null
@@ -139,8 +158,8 @@ class FileList extends React.PureComponent {
                     fileList && fileList.length ?
                         <div className={styles.fileList}>
                             {
-                                fileList.map(item => (
-                                    <div className={styles.fileItem} key={item.file_id}>
+                                fileList.map((item,i) => (
+                                    <div className={styles.fileItem} key={i}>
                                         <div className={styles.fileName}>{item.file_name}</div>
                                         {dirData.name == "收藏" ?
                                             <div className={styles.fileControl}>
@@ -166,7 +185,7 @@ class FileList extends React.PureComponent {
                             <p>请选择目录</p>
                 }
                 {this.state.uploadBox && <UploadFile onClose={this.handleCloseUploadBox} onDone={this.handleDone} />}
-                {this.state.createDir && <CreateDirBox onClose={this.handleCloseCreateDir} />}
+                {this.state.createDir && <CreateDirBox isRename={isRename} onClose={this.handleCloseCreateDir} />}
                 {this.state.modifyBox && <ModifyFileBox onClose={this.handleCloseModifyBox} onDone={this.handleDone} item={this.state.currentFile} />}
             </div>
         )

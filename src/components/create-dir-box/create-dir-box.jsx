@@ -24,11 +24,16 @@ class CreateDirBox extends React.PureComponent{
         })
     }
     async handleCreateDir() {
-        let params = {
+        let {isRename} =this.props
+        let newParams = {
             dir_name: this.state.new_name,
             dir_pid: this.props.currentDir
         }
-        let result = await ajax.post('files/addDir', params)
+        let params = {
+            new_name: this.state.new_name,
+            dir_id: this.props.currentDir
+        }
+        let result = isRename?await ajax.post('files/renameDir', params):await ajax.post('files/addDir', newParams)
         if (result.code === 0) {
             this.props.onClose()
             this.props.onDone && this.props.onDone()
@@ -36,13 +41,14 @@ class CreateDirBox extends React.PureComponent{
     }
     render() {
         const {
-            onClose
+            onClose,
+            isRename
         } = this.props
         const dom = (
             <div className={styles.cover}>
                 <div className={styles.box}>
                     <input type="text" value={this.state.new_name} onChange={this.handleInputChange} placeholder="请输入目录名称" />
-                    <button onClick={this.handleCreateDir}>新建</button>
+                    <button onClick={this.handleCreateDir}>{isRename?"修改":"新建"}</button>
                     <div className={styles.close} onClick={onClose}></div>
                 </div>
             </div>
