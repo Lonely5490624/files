@@ -21,6 +21,18 @@
             border: 1px solid #eeeeee;
             margin-top: 10px;
         }
+        label{
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+            input[type="checkbox"]{
+                width: 14px;
+                height: 14px;
+                border: 1px solid #cccccc;
+                border-radius: 3px;
+                margin-right: 8px;
+            }
+        }
         button{
             width: 80px;
             height: 34px;

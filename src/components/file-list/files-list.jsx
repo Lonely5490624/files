@@ -26,6 +26,8 @@ class FileList extends React.PureComponent{
             'handleCloseCreateDir',
             'handleDone',
             'handleFileShare',
+            'handleCancelFileShare',
+            'handleCollect',
             'handleFileDelete',
             'handleOpenModifyBox',
             'handleCloseModifyBox'
@@ -56,8 +58,8 @@ class FileList extends React.PureComponent{
         })
     }
     // 当上传完成后的事件
-    handleDone() {
-        this.props.uploadDone && this.props.uploadDone(this.props.currentDir)
+    handleDone(currentDir) {
+        this.props.uploadDone && this.props.uploadDone(currentDir)
     }
     // 共享文件 
     async handleFileShare(id) {
@@ -66,7 +68,27 @@ class FileList extends React.PureComponent{
         }
         const result = await ajax.post('files/shareFile', params)
         if (result.code === 0) {
-
+            this.props.uploadDone && this.props.uploadDone(this.props.currentDir)
+        }
+    }
+    // 取消共享文件
+    async handleCancelFileShare(id) {
+        const params = {
+            file_id: id
+        }
+        const result = await ajax.post('files/cancelShareFile', params)
+        if (result.code === 0) {
+            this.props.uploadDone && this.props.uploadDone(this.props.currentDir)
+        }
+    }
+    // 收藏文件
+    async handleCollect(id) {
+        const params = {
+            file_id: id
+        }
+        const result = await ajax.post('files/collectFile', params)
+        if (result.code === 0) {
+            this.props.uploadDone && this.props.uploadDone(this.props.currentDir)
         }
     }
     // 删除文件
@@ -116,7 +138,11 @@ class FileList extends React.PureComponent{
                                         <div className={styles.fileName}>{item.file_name}</div>
                                         <div className={styles.fileControl}>
                                             <div className={classnames(styles.fileBtn, styles.fileModify)} onClick={this.handleOpenModifyBox.bind(this, item)}>重命名</div>
-                                            <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleFileShare.bind(this, item.file_id)}>共享</div>
+                                            {item.is_share === 1 ?
+                                                <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleCancelFileShare.bind(this, item.file_id)}>取消共享</div> :
+                                                <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleFileShare.bind(this, item.file_id)}>共享</div>
+                                            }
+                                            <div className={classnames(styles.fileBtn, styles.fileCollect)} onClick={this.handleCollect.bind(this, item.file_id)}>收藏</div>
                                             <div className={classnames(styles.fileBtn, styles.fileDelete)} onClick={this.handleFileDelete.bind(this, item.file_id)}>删除</div>
                                         </div>
                                     </div>

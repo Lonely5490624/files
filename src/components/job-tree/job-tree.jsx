@@ -28,7 +28,8 @@ class JobTree extends React.PureComponent{
             'handleCloseAddUsers',
             'handleDoneAddUsers',
             'handleOpenModifyJob',
-            'handleCloseModifyJob'
+            'handleCloseModifyJob',
+            'handleDeleteJob'
         ])
     }
     async handleGetJobList() {
@@ -89,6 +90,16 @@ class JobTree extends React.PureComponent{
             currentJob: null
         })
     }
+    // 删除岗位
+    async handleDeleteJob(item) {
+        const params = {
+            job_id: item.job_id
+        }
+        const result = await ajax.post('users/deleteJob', params)
+        if (result.code === 0) {
+
+        }
+    }
     componentDidMount() {
         this.handleGetJobList()
     }
@@ -108,7 +119,7 @@ class JobTree extends React.PureComponent{
                                     <button className={styles.jobBtn} onClick={this.handleOpenUsers.bind(this, item)}>查看人员</button>
                                     <button className={styles.jobBtn} onClick={this.handleOpenAddUsers.bind(this, item)}>新增人员</button>
                                     <button className={styles.jobBtn} onClick={this.handleOpenModifyJob.bind(this, item)}>修改</button>
-                                    <button className={styles.jobBtn}>删除</button>
+                                    <button className={styles.jobBtn} onClick={this.handleDeleteJob.bind(this, item)}>删除</button>
                                 </div>
                             </div>
                         </div>

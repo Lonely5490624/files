@@ -34,8 +34,8 @@ class UploadFile extends React.PureComponent{
         let url = this.props.isShare ? 'files/uploadFileShare' : 'files/uploadFile'
         let result = await ajax.post(url, params, config)
         if (result.code === 0) {
+            this.props.onDone && this.props.onDone(this.props.currentDir)
             this.props.onClose()
-            this.props.onDone && this.props.onDone()
         }
     }
     render() {

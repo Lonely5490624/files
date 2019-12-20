@@ -42,8 +42,14 @@ class UserListBox extends React.PureComponent{
             userInfo:result.data
         })
     }
-    deleteUser(item){
-        console.log("删除",item)
+    async deleteUser(item){
+        const params = {
+            uid: item.uid
+        }
+        const result = await ajax.post('users/deleteUser', params)
+        if (result.code === 0) {
+
+        }
     }
     handleCloseAddUsers() {
         this.setState({

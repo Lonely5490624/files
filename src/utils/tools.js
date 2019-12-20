@@ -6,7 +6,8 @@ const listToTree = function (list, depth = 1) {
             name: item.dir_name,
             dir_pid:item.dir_pid,
             can_delete:item.can_delete,
-            depth: depth
+            depth: depth,
+            isShare: item.is_share
         }
 
         if (item.children && item.children.length) {

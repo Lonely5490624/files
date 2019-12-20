@@ -1,24 +1,15 @@
 .filePage{
-    width: 100%;
-    .fileHeader{
-        padding: 15px;
-        border-bottom: 1px solid #eeeeee;
-        button{
-            width: 80px;
-            height: 34px;
-            border: 1px solid #eeeeee;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        button + button{
-            margin-left: 20px;
-        }
-    }
+    display: flex;
+    background: #fff;
+    flex: 1;
+    flex-direction: column;
     .fileList{
-        display: flex;
         padding: 15px;
         .fileItem{
-            width: 200px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             font-size: 16px;
             border: 1px solid #eeeeee;
             border-radius: 5px;
@@ -32,7 +23,6 @@
             .fileControl{
                 display: flex;
                 justify-content: space-between;
-                border-top: 1px dashed #eeeeee;
                 .fileBtn{
                     width: 80px;
                     line-height: 34px;

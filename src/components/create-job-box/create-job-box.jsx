@@ -14,7 +14,6 @@ class CreateJobBox extends React.PureComponent{
             depSet: false,
             isCreateUser: false,
             isModifyUserInfo: false,
-            isModifyPassword: false,
             isCreateDir: false,
             isUploadFile: false,
             isDownloadFile: false,
@@ -30,7 +29,6 @@ class CreateJobBox extends React.PureComponent{
             'handleInputDepSet',
             'handleInputCreateUser',
             'handleInputModifyUserInfo',
-            'handleInputModifyPassword',
             'handleInputCreateDir',
             'handleInputUploadFile',
             'handleInputDownloadFile',
@@ -127,7 +125,6 @@ class CreateJobBox extends React.PureComponent{
             dep_set: this.state.depSet,
             create_user: this.state.isCreateUser,
             modify_userinfo: this.state.isModifyUserInfo,
-            modify_password: this.state.isModifyPassword,
             create_dir: this.state.isCreateDir,
             upload_file: this.state.isUploadFile,
             download_file: this.state.isDownloadFile,
@@ -156,7 +153,6 @@ class CreateJobBox extends React.PureComponent{
                     <label><input type="checkbox" checked={this.state.depSet} onChange={this.handleInputDepSet}/>设置部门</label>
                     <label><input type="checkbox" checked={this.state.isCreateUser} onChange={this.handleInputCreateUser}/>创建用户</label>
                     <label><input type="checkbox" checked={this.state.isModifyUserInfo} onChange={this.handleInputModifyUserInfo}/>修改用户信息</label>
-                    <label><input type="checkbox" checked={this.state.isModifyPassword} onChange={this.handleInputModifyPassword}/>修改用户密码</label>
                     <label><input type="checkbox" checked={this.state.isCreateDir} onChange={this.handleInputCreateDir}/>创建目录</label>
                     <label><input type="checkbox" checked={this.state.isUploadFile} onChange={this.handleInputUploadFile}/>上传文件</label>
                     <label><input type="checkbox" checked={this.state.isDownloadFile} onChange={this.handleInputDownloadFile}/>下载文件</label>

@@ -32,6 +32,7 @@ class Home extends React.Component{
             'handleGetDirList',
             'handleGetShareDirList',
             'handleClickDir',
+            'handleRefreshFileList',
             'handleLogout',
             'getCurrentJob'
         ])
@@ -93,6 +94,14 @@ class Home extends React.Component{
             })
         }
     }
+    async handleRefreshFileList(id) {
+        let result = await ajax.get(`files/getFileWithDirId?dir_id=${id}`);
+        if (result.code === 0) {
+            this.setState({
+                fileList: result.data
+            })
+        }
+    }
     async handleLogout () {
         let result = await ajax.post('users/logout')
         if (result.code === 0) {
@@ -142,7 +151,7 @@ class Home extends React.Component{
                             {
                                 this.props.isShare ? 
                                 <FileListShare fileList={this.state.fileList} cancelDone={this.handleClickDir} /> :
-                                <FileList fileList={this.state.fileList} uploadDone={this.handleClickDir} />
+                                <FileList fileList={this.state.fileList} uploadDone={this.handleRefreshFileList} />
                             }
                         </div>
                     </div>

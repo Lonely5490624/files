@@ -8,6 +8,7 @@ import CreateDepBox from '../create-dep-box/create-dep-box'
 import CreateJobBox from '../create-job-box/create-job-box'
 import ModifyDepBox from '../modify-dep-box/modify-dep-box'
 import JobTree from '../job-tree/job-tree'
+import ajax from '../../utils/ajax'
 
 class DepartmentTree extends React.PureComponent{
     constructor(){
@@ -25,7 +26,8 @@ class DepartmentTree extends React.PureComponent{
             'handleOpenAddJob',
             'handleCloseAddJob',
             'handleOpenModifyDep',
-            'handleCloseModifyDep'
+            'handleCloseModifyDep',
+            'handleDeleteDep'
         ])
     }
     // 打开新增部门弹窗
@@ -70,6 +72,16 @@ class DepartmentTree extends React.PureComponent{
             currentDep: null
         })
     }
+    // 删除部门
+    async handleDeleteDep(dep) {
+        let params = {
+            dep_id: dep.dep_id
+        }
+        const result = await ajax.post('users/deleteDep', params)
+        if (result.code === 0) {
+
+        }
+    }
     render() {
         const {
             item,
@@ -89,7 +101,7 @@ class DepartmentTree extends React.PureComponent{
                                         <button className={styles.depBtn} onClick={this.handleOpenAddDep.bind(this, ele)}>新增部门</button>
                                         <button className={styles.depBtn} onClick={this.handleOpenAddJob.bind(this, ele)}>新增岗位</button>
                                         <button className={styles.depBtn} onClick={this.handleOpenModifyDep.bind(this, ele)}>修改</button>
-                                        <button className={styles.depBtn}>删除</button>
+                                        <button className={styles.depBtn} onClick={this.handleDeleteDep.bind(this, ele)}>删除</button>
                                     </div>
                                 </div>
                                 {
