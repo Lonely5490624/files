@@ -28,7 +28,9 @@ class SelectTree extends React.PureComponent {
        
     }
     componentDidMount() {
-
+        this.setState({
+            item:this.props.depItem
+        })
     }
     createTree(dataTree){
         let list = [];

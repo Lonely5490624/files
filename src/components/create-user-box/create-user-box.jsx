@@ -70,7 +70,7 @@ class CreateUserBox extends React.PureComponent{
         
     }
     // 创建用户
-    componentWillMount(){
+    componentDidMount(){
         let {isUpdate,userInfo} = this.props;
         /* ajax.get('users/getDepartment').then(res=>{
             console.log(res)
@@ -92,11 +92,7 @@ class CreateUserBox extends React.PureComponent{
             })
         }
     }
-    componentWillUnmount(){
-        this.setState({
-            
-        })
-    }
+   
     async handleCreateUser() {
         const params = {
             username: this.state.username,
@@ -152,7 +148,7 @@ class CreateUserBox extends React.PureComponent{
                             <div className={styles.formItemInput}>
                                 {
                                     isUpdate?
-                                    <SelectTree onChange={this.onSelectChange.bind(this)} className={" test"} dataTree={depData} ref="selectTree"/>
+                                    <SelectTree onChange={this.onSelectChange.bind(this)} className={" test"} depItem={depItem} dataTree={depData} ref="selectTree"/>
                                     :
                                     <input type="text" value={depItem.dep_name} readOnly/>
                                 }
@@ -164,9 +160,9 @@ class CreateUserBox extends React.PureComponent{
                                 {
                                     isUpdate?
                                     <select onChange={this.selectJob.bind(this)} value={jobValue}>
-                                        {jobData.map((item,index)=>{
+                                        {jobData&&jobData.length>0?jobData.map((item,index)=>{
                                             return ( <option key={index} value ={item.job_name}>{item.job_name}</option>)
-                                        })}
+                                        }):null}
                                     </select>
                                     :
                                     <input type="text" value={jobItem.job_name} readOnly/>

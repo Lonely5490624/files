@@ -57,6 +57,7 @@ class JobTree extends React.PureComponent{
     }
     // 打开新增人员弹窗
     handleOpenAddUsers(item) {
+        console.log(item)
         this.setState({
             addUserBox: true,
             currentJob: item
@@ -66,19 +67,20 @@ class JobTree extends React.PureComponent{
     handleCloseAddUsers() {
         this.setState({
             addUserBox: false,
-            currentJob: null
+            //currentJob: null
         })
     }
     // 新增人员完成
     handleDoneAddUsers() {
         this.setState({
             addUserBox: false,
-            currentJob: null
+            //currentJob: null
         })
         this.handleCloseAddUsers()
     }
     // 打开修改岗位弹窗
     handleOpenModifyJob(item) {
+       
         this.setState({
             modifyJobBox: true,
             currentJob: item
