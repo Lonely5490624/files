@@ -32,6 +32,7 @@ class FileList extends React.PureComponent {
             'handleFileDelete',
             'handleOpenModifyBox',
             'handleCloseModifyBox',
+            'handleDownloadFile',
             'handleRename',
             'handleDeleteDir'
         ])
@@ -123,6 +124,10 @@ class FileList extends React.PureComponent {
             modifyBox: false
         })
     }
+    // 下载文件
+    handleDownloadFile(item) {
+        ajax.download(`files/fileDownload?file_id=${item.file_id}`)
+    }
     handleRename(){
         this.setState({
             isRename:true,
@@ -167,6 +172,7 @@ class FileList extends React.PureComponent {
                                             </div>
                                             :
                                             <div className={styles.fileControl}>
+                                                <div className={classnames(styles.fileBtn, styles.fileDownload)} onClick={this.handleDownloadFile.bind(this, item)}>下载</div>
                                                 <div className={classnames(styles.fileBtn, styles.fileModify)} onClick={this.handleOpenModifyBox.bind(this, item)}>重命名</div>
                                                 {item.is_share === 1 ?
                                                     <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleCancelFileShare.bind(this, item.file_id)}>取消共享</div> :

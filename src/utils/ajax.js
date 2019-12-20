@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+const baseURL = 'http://47.103.138.57/api'
+
 let ajax = axios.create({
-    baseURL: 'http://47.103.138.57/api',
+    baseURL,
     timeout: 10000
 })
 
@@ -33,5 +35,16 @@ ajax.interceptors.response.use(response => {
     console.log(error)
     return Promise.reject(error)
 })
+
+ajax.download = function(url) {
+    const token = localStorage.getItem('token')
+    let fullUrl = `${baseURL}/${url}`
+    if (fullUrl.includes('?')) {
+        fullUrl += `&token=${token}`
+    } else {
+        fullUrl += `?token=${token}`
+    }
+    window.open(fullUrl)
+}
 
 export default ajax
