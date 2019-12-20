@@ -26,7 +26,8 @@ class Home extends React.Component {
                 menu: []
             },
             fileList: null,
-            dirs: ["1", "2", "3"]
+            dirs: [],
+            dirData:null
         }
         this.menu = []
         bindAll(this, [
@@ -54,7 +55,7 @@ class Home extends React.Component {
     }
     // 获取我的目录列表
     async handleGetDirList() {
-        let result = await ajax.get('files/getDirList')
+        let result = await ajax.get('files/getDirList');
         if (result.code === 0) {
             this.menu.push(...listToTree(result.data))
         }
@@ -63,7 +64,24 @@ class Home extends React.Component {
     async handleGetShareDirList() {
         let result = await ajax.get('files/getShareDir')
         if (result.code === 0) {
-            this.menu.push(...listToTree(result.data, true))
+            let arrData = [{
+                dir_id: "",
+                dir_pid: "",
+                dir_name: "分享",
+                dir_path: "",
+                uniq: "",
+                depth: 1,
+                is_share:1,
+                can_delete: 0,
+                create_uid: "",
+                create_time: "",
+                update_uid: null,
+                update_time: null,
+                delete_uid: null,
+                delete_time: null,
+                children:result.data
+            }]
+            this.menu.push(...listToTree(arrData, true))
         }
     }
     // 点击左侧目录事件
@@ -71,11 +89,14 @@ class Home extends React.Component {
         await this.props.setCurrentDir(item.id)
         await this.props.setDirIsShare(isShare)
         const url = this.props.isShare ? `files/getShareFileWithDirId?dir_id=${item.id}` : `files/getFileWithDirId?dir_id=${item.id}`
-        let result = await ajax.get(url);
-        let dirArr = []
-        console.log(item)
-        /* console.log("item",item);
-        console.log("this",this.menu); */
+        let result = item.name == "收藏"?await ajax.get('files/getCollectList'):await ajax.get(url);
+        
+        let dirArr = [];
+        let dirs=(item.name.split("/")).slice(-item.depth);
+        if(isShare){
+            let di = ["分享"];
+            dirs = di.concat(dirs)
+        }
         let arrs = []
         let getDir = (dataArr) => {
             dataArr.forEach((i) => {
@@ -90,10 +111,17 @@ class Home extends React.Component {
             })
         }
         getDir(this.menu);
-        console.log(dirArr)
         if (result.code === 0) {
             this.setState({
-                fileList: result.data
+                dirData:item,
+                fileList: result.data,
+                dirs:dirs
+            })
+        }else if(result.code === 1000){
+            this.setState({
+                dirData:item,
+                fileList: null,
+                dirs:dirs
             })
         }
     }
@@ -105,7 +133,7 @@ class Home extends React.Component {
             })
         }
     }
-    async handleLogout () {
+    async handleLogout() {
         let result = await ajax.post('users/logout')
         if (result.code === 0) {
             localStorage.removeItem('token')
@@ -124,7 +152,11 @@ class Home extends React.Component {
     async componentWillMount() {
         await this.getCurrentJob()
         await this.handleGetDirList()
-        await this.handleGetShareDirList()
+        await this.handleGetShareDirList();
+        let fa={
+            id: "", name: "收藏", dir_pid: 0, can_delete:0, depth: 1,isShare:0
+        }
+        this.menu.push(fa)
         this.setState({
             dirList: {
                 menu: this.menu
@@ -167,19 +199,19 @@ class Home extends React.Component {
                             <div className={styles.dir}>
                                 <h3>当前目录：</h3>
                                 <ul>
-                                {dirs.map((i, index) => {
-                                    return (<li key={index}>{i}{
-                                        
-                                        index===dirs.length-1?"":
-                                        <span>{">"}</span>
-                                    }</li>)
-                                })}
+                                    {dirs.map((i, index) => {
+                                        return (<li key={index}>{i}{
+
+                                            index == dirs.length - 1 ? "" :
+                                                <span>{">"}</span>
+                                        }</li>)
+                                    })}
                                 </ul>
                             </div>
                             {
-                                this.props.isShare ? 
-                                <FileListShare fileList={this.state.fileList} cancelDone={this.handleClickDir} /> :
-                                <FileList fileList={this.state.fileList} uploadDone={this.handleRefreshFileList} />
+                                this.props.isShare ?
+                                    <FileListShare fileList={this.state.fileList}  cancelDone={this.handleClickDir} /> :
+                                    <FileList fileList={this.state.fileList} dirData={this.state.dirData} uploadDone={this.handleRefreshFileList} />
                             }
                         </div>
                     </div>

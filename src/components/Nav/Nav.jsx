@@ -74,11 +74,13 @@ class Nav extends React.Component {
             if (item.menu) {
                 next = this.createTree(item, type);
             }
+            let nameArr =item.name.split("/")
+            let nameIndex = nameArr.length-1
             let li = <li key={index}>
                 <dl style={{ paddingLeft: item.depth * 10 }}>
                     <dt onClick={item.menu ? this.handleToggle : null}>{item.menu ? "+" : ""}</dt>
                     <dd>
-                        <span className={""} onClick={this.handleToRoute.bind(this, item, item.isShare)}>{item.name}</span>
+                        <span className={""} onClick={this.handleToRoute.bind(this, item, item.isShare)}>{nameArr[nameIndex]}</span>
                         {/* {type === "fileTree" ?
                             <em onClick={this.handleCtrToggle.bind(this)}>
                                 <i></i>
@@ -112,7 +114,6 @@ class Nav extends React.Component {
     render() {
         let { hasMax ,navShow} = this.state;
         let { data, type } = this.props;
-
         hasMax = hasMax ? " hasMax" : "";
         navShow = navShow?"":" hide"
         return (

@@ -10,7 +10,7 @@ import UploadFile from '../upload-file/upload-file'
 import ModifyFileBox from '../modify-file-box/modify-file-box'
 import CreateDirBox from '../create-dir-box/create-dir-box'
 
-class FileList extends React.PureComponent{
+class FileList extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -82,11 +82,11 @@ class FileList extends React.PureComponent{
         }
     }
     // 收藏文件
-    async handleCollect(id) {
+    async handleCollect(id,type) {
         const params = {
             file_id: id
         }
-        const result = await ajax.post('files/collectFile', params)
+        const result = type&&type=="cancel"?await ajax.post('files/cancelCollect', params):await ajax.post('files/collectFile', params)
         if (result.code === 0) {
             this.props.uploadDone && this.props.uploadDone(this.props.currentDir)
         }
@@ -116,18 +116,24 @@ class FileList extends React.PureComponent{
     }
     render() {
         let {
-            fileList
+            fileList,
+            dirData
         } = this.props
-
         return (
             <div className={styles.filePage}>
                 {
                     this.props.currentDir ?
-                    <div className={styles.fileHeader}>
-                        <button onClick={this.handleOpenUploadBox}>上传文件</button>
-                        <button onClick={this.handleOpenCreateDir}>新建目录</button>
-                    </div> :
-                    null
+                        <div className={styles.fileHeader}>
+                            <button onClick={this.handleOpenUploadBox}>上传文件</button>
+                            <button onClick={this.handleOpenCreateDir}>新建目录</button>
+                            {
+                                dirData && dirData.can_delete ? <button >修改目录</button> : null
+                            }
+                            {
+                                dirData && dirData.can_delete ? <button >删除目录</button> : null
+                            }
+                        </div> :
+                        null
                 }
                 {
                     fileList && fileList.length ?
@@ -136,22 +142,28 @@ class FileList extends React.PureComponent{
                                 fileList.map(item => (
                                     <div className={styles.fileItem} key={item.file_id}>
                                         <div className={styles.fileName}>{item.file_name}</div>
-                                        <div className={styles.fileControl}>
-                                            <div className={classnames(styles.fileBtn, styles.fileModify)} onClick={this.handleOpenModifyBox.bind(this, item)}>重命名</div>
-                                            {item.is_share === 1 ?
-                                                <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleCancelFileShare.bind(this, item.file_id)}>取消共享</div> :
-                                                <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleFileShare.bind(this, item.file_id)}>共享</div>
-                                            }
-                                            <div className={classnames(styles.fileBtn, styles.fileCollect)} onClick={this.handleCollect.bind(this, item.file_id)}>收藏</div>
-                                            <div className={classnames(styles.fileBtn, styles.fileDelete)} onClick={this.handleFileDelete.bind(this, item.file_id)}>删除</div>
-                                        </div>
+                                        {dirData.name == "收藏" ?
+                                            <div className={styles.fileControl}>
+                                                <div className={classnames(styles.fileBtn, styles.fileCollect)} onClick={this.handleCollect.bind(this, item.file_id,"cancel")}>取消收藏</div>
+                                            </div>
+                                            :
+                                            <div className={styles.fileControl}>
+                                                <div className={classnames(styles.fileBtn, styles.fileModify)} onClick={this.handleOpenModifyBox.bind(this, item)}>重命名</div>
+                                                {item.is_share === 1 ?
+                                                    <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleCancelFileShare.bind(this, item.file_id)}>取消共享</div> :
+                                                    <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleFileShare.bind(this, item.file_id)}>共享</div>
+                                                }
+                                                <div className={classnames(styles.fileBtn, styles.fileCollect)} onClick={this.handleCollect.bind(this, item.file_id)}>收藏</div>
+                                                <div className={classnames(styles.fileBtn, styles.fileDelete)} onClick={this.handleFileDelete.bind(this, item.file_id)}>删除</div>
+                                            </div>}
+
                                     </div>
                                 ))
                             }
                         </div> :
                         this.props.currentDir ?
-                        <p>暂无文件</p> :
-                        <p>请选择目录</p>
+                            <p>暂无文件</p> :
+                            <p>请选择目录</p>
                 }
                 {this.state.uploadBox && <UploadFile onClose={this.handleCloseUploadBox} onDone={this.handleDone} />}
                 {this.state.createDir && <CreateDirBox onClose={this.handleCloseCreateDir} />}
