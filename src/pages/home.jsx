@@ -27,7 +27,14 @@ class Home extends React.Component {
             },
             fileList: null,
             dirs: [],
-            dirData:null
+            dirData: null,
+            pwdBoxToggle: false,
+            curPwd:"",
+            newPwd:"",
+            confirmPwd:"",
+          
+            errConfirm:'',
+            isDisabled:true
         }
         this.menu = []
         bindAll(this, [
@@ -38,7 +45,11 @@ class Home extends React.Component {
             'handleClickDir',
             'handleRefreshFileList',
             'handleLogout',
-            'getCurrentJob'
+            'getCurrentJob',
+            'changePwdToggle',
+            'handleCurPwd',
+            'handleNewPwd',
+            'handleConfirmPwd'
         ])
     }
     // 打开部门设置
@@ -56,6 +67,7 @@ class Home extends React.Component {
     // 获取我的目录列表
     async handleGetDirList() {
         let result = await ajax.get('files/getDirList');
+        console.log(result)
         if (result.code === 0) {
             this.menu.push(...listToTree(result.data))
         }
@@ -71,7 +83,7 @@ class Home extends React.Component {
                 dir_path: "",
                 uniq: "",
                 depth: 1,
-                is_share:1,
+                is_share: 1,
                 can_delete: 0,
                 create_uid: "",
                 create_time: "",
@@ -79,7 +91,8 @@ class Home extends React.Component {
                 update_time: null,
                 delete_uid: null,
                 delete_time: null,
-                children:result.data
+                children: result.data,
+               
             }]
             this.menu.push(...listToTree(arrData, true))
         }
@@ -88,12 +101,13 @@ class Home extends React.Component {
     async handleClickDir(item, isShare) {
         await this.props.setCurrentDir(item.id)
         await this.props.setDirIsShare(isShare)
+       
         const url = this.props.isShare ? `files/getShareFileWithDirId?dir_id=${item.id}` : `files/getFileWithDirId?dir_id=${item.id}`
-        let result = item.name == "收藏"?await ajax.get('files/getCollectList'):await ajax.get(url);
-        
+        let result = item.name == "收藏" ? await ajax.get('files/getCollectList') : await ajax.get(url);
+
         let dirArr = [];
-        let dirs=(item.name.split("/")).slice(-item.depth);
-        if(isShare){
+        let dirs = (item.name.split("/")).slice(-item.depth);
+        if (isShare) {
             let di = ["分享"];
             dirs = di.concat(dirs)
         }
@@ -113,20 +127,21 @@ class Home extends React.Component {
         getDir(this.menu);
         if (result.code === 0) {
             this.setState({
-                dirData:item,
+                dirData: item,
                 fileList: result.data,
-                dirs:dirs
+                dirs: dirs
             })
-        }else if(result.code === 1000){
+        } else if (result.code === 1000) {
             this.setState({
-                dirData:item,
+                dirData: item,
                 fileList: null,
-                dirs:dirs
+                dirs: dirs
             })
         }
     }
-    async handleRefreshFileList(id) {
-        let result = await ajax.get(`files/getFileWithDirId?dir_id=${id}`);
+    async handleRefreshFileList(id, type) {
+        
+        let result = type ? await ajax.get('files/getCollectList') : await ajax.get(`files/getFileWithDirId?dir_id=${id}`);
         if (result.code === 0) {
             this.setState({
                 fileList: result.data
@@ -153,8 +168,8 @@ class Home extends React.Component {
         await this.getCurrentJob()
         await this.handleGetDirList()
         await this.handleGetShareDirList();
-        let fa={
-            id: "", name: "收藏", dir_pid: 0, can_delete:0, depth: 1,isShare:0
+        let fa = {
+            id: "", name: "收藏", dir_pid: 0, can_delete: 0, depth: 1, isShare: 0
         }
         this.menu.push(fa)
         this.setState({
@@ -172,28 +187,152 @@ class Home extends React.Component {
             loading.close()
         }, 3000);
     }
+
+    changePwdToggle(toggle) {
+        this.setState({
+            pwdBoxToggle:toggle
+        })
+    }
+    handleCurPwd(e){
+        this.setState({
+            curPwd:e.target.value
+        })
+    }
+    handleNewPwd(e){
+        let {newPwd,curPwd} = this.state;
+        let errMsg =''
+        if(e.target.value != newPwd){
+            errMsg ='两次输入不一致，请从新输入'
+        }
+        if(e.target.value == curPwd){
+            errMsg ='新密码不能与原始密码一致'
+        }
+        this.setState({
+            newPwd:e.target.value,
+            errConfirm:errMsg,
+            
+        })
+    }
+    handleConfirmPwd(e){
+
+        let {newPwd,curPwd} = this.state;
+        let errMsg =''
+        if(e.target.value != newPwd){
+            errMsg ='两次输入不一致，请从新输入'
+        }
+        if(e.target.value == curPwd){
+            errMsg ='新密码不能与原始密码一致'
+        }
+        this.setState({
+            confirmPwd:e.target.value,
+            errConfirm:errMsg,
+        })
+    }
+    cancelPwdToggle(){
+        this.setState({
+            pwdBoxToggle: false,
+            curPwd:"",
+            newPwd:"",
+            confirmPwd:"",
+            errConfirm:''
+        })
+    }
+    async handleChangePwd(){
+        let {errConfirm,curPwd,newPwd,confirmPwd} = this.state
+        let isPass = errConfirm=='';
+        if(isPass){
+           
+            let res = await ajax.post('users/modifyPwd',{oldPassword:curPwd,newPassword:newPwd,newPassword2:confirmPwd});
+            if(res.code!=0){
+                this.setState({
+                    errConfirm:res.message
+                })
+            }else if(res.code===0){
+                this.setState({
+                    pwdBoxToggle: false,
+                    curPwd:"",
+                    newPwd:"",
+                    confirmPwd:"",
+                    errConfirm:''
+                })
+            }
+            
+        }
+    }
+    async refreDir(){
+        this.menu = []
+        await this.getCurrentJob()
+        await this.handleGetDirList()
+        await this.handleGetShareDirList();
+        let fa = {
+            id: "", name: "收藏", dir_pid: 0, can_delete: 0, depth: 1, isShare: 0
+        }
+        this.menu.push(fa)
+        this.setState({
+            dirList: {
+                menu: this.menu
+            }
+        })
+    }
     handleOpenConfirm() {
         confirm('确认删除吗', this.timeout)
     }
     timeout() {
         console.log(11111)
+
     }
     render() {
-        let { dirs } = this.state;
+        let { dirs, pwdBoxToggle ,curPwd,newPwd,confirmPwd,errConfirm} = this.state;
+       
         return (
             <>
                 <div className={styles.home}>
+                    {pwdBoxToggle ?
+                        <div className={styles.pwdBox}>
+                            <div className={styles.mask}></div>
+                            
+                            <div className={styles.box}>
+                                <dl>
+                                    <dt>修改密码</dt>
+                                    <dd>
+                                        <span>当前密码：</span>
+                                        <input type="password" onChange={this.handleCurPwd} value={curPwd}/>
+                                    </dd>
+                                   
+                                    <dd>
+                                        <span>新密码：</span>
+                                        <input type="password" onChange={this.handleNewPwd} value={newPwd}/>
+                                    </dd>
+                                  
+                                    <dd>
+                                        <span>确认新密码：</span>
+                                        <input type="password" onChange={this.handleConfirmPwd} value={confirmPwd}/>
+                                    </dd>
+                                    <dd className={styles.errTip}>{errConfirm}</dd>
+                                    <dd className={styles.layerButton}>
+                                        <button onClick={this.cancelPwdToggle.bind(this,false)}>取消</button>
+                                        <button onClick={this.handleChangePwd.bind(this)}>确认</button>
+                                    </dd>
+                                </dl>
+                                
+                            </div>
+                        </div> : ""}
                     <div className={styles.navTop}>
                         <h1>logo</h1>
                         <ul>
                             {this.state.depSet ? <li onClick={this.handleShowDepartmnet}>部门设置</li> : null}
                             <li onClick={this.handleToast.bind(this)}>Toast</li>
                             <li onClick={this.handleOpenloading.bind(this)}>Loading</li>
+
+                            <li onClick={this.changePwdToggle.bind(this,true)}>修改密码</li>
+
                             <li onClick={this.handleOpenConfirm.bind(this)}>Confirm</li>
+
                             <li onClick={this.handleLogout}>注销</li>
                         </ul>
                     </div>
                     <div className={styles.contentBody}>
+
                         <Nav type={"fileTree"} data={this.state.dirList} onDirClick={this.handleClickDir} />
                         <div className={styles.contentMain}>
                             <div className={styles.dir}>
@@ -210,8 +349,8 @@ class Home extends React.Component {
                             </div>
                             {
                                 this.props.isShare ?
-                                    <FileListShare fileList={this.state.fileList}  cancelDone={this.handleClickDir} /> :
-                                    <FileList fileList={this.state.fileList} dirData={this.state.dirData} uploadDone={this.handleRefreshFileList} />
+                                    <FileListShare fileList={this.state.fileList} cancelDone={this.handleClickDir} /> :
+                                    <FileList fileList={this.state.fileList} dirData={this.state.dirData} refreDir={this.refreDir.bind(this)} uploadDone={this.handleRefreshFileList} />
                             }
                         </div>
                     </div>
