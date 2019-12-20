@@ -114,7 +114,8 @@ class JobTree extends React.PureComponent{
         return (
             <>
                 {
-                    jobList && jobList.length && jobList.map(item => (
+                    jobList && jobList.length ?
+                    jobList.map(item => (
                         <div className={classnames(styles.pLeft20)} key={item.job_id}>
                             <div className={styles.jobItem}>
                                 <div className={styles.jobName}>{item.job_name}</div>
@@ -126,7 +127,8 @@ class JobTree extends React.PureComponent{
                                 </div>
                             </div>
                         </div>
-                    ))
+                    )) :
+                    null
                 }
                 {this.state.userBox && <UserListBox jobItem={this.state.currentJob} onClose={this.handleCloseUsers} />}
                 {this.state.modifyJobBox && <ModifyJobBox jobItem={this.state.currentJob} onClose={this.handleCloseModifyJob} />}

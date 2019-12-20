@@ -12,6 +12,7 @@ import FileListShare from '../components/file-list-share/files-list-share'
 import DepartmentBox from '../components/department-box/department-box'
 import toast from '../components/toast/toast'
 import loading from '../components/loading/loading'
+import confirm from '../components/confirm/confirm'
 
 import styles from '../styles/home.module.scss'
 
@@ -77,9 +78,9 @@ class Home extends React.Component {
         console.log("this",this.menu); */
         let arrs = []
         let getDir = (dataArr) => {
-            dataArr.map((i) => {
+            dataArr.forEach((i) => {
 
-                if (item.dir_pid == i.id) {
+                if (item.dir_pid === i.id) {
                     dirArr.push(i.name)
                 }
                 if (i.menu && i.menu.length > 0) {
@@ -139,6 +140,12 @@ class Home extends React.Component {
             loading.close()
         }, 3000);
     }
+    handleOpenConfirm() {
+        confirm('确认删除吗', this.timeout)
+    }
+    timeout() {
+        console.log(11111)
+    }
     render() {
         let { dirs } = this.state;
         return (
@@ -150,6 +157,7 @@ class Home extends React.Component {
                             {this.state.depSet ? <li onClick={this.handleShowDepartmnet}>部门设置</li> : null}
                             <li onClick={this.handleToast.bind(this)}>Toast</li>
                             <li onClick={this.handleOpenloading.bind(this)}>Loading</li>
+                            <li onClick={this.handleOpenConfirm.bind(this)}>Confirm</li>
                             <li onClick={this.handleLogout}>注销</li>
                         </ul>
                     </div>
@@ -162,7 +170,7 @@ class Home extends React.Component {
                                 {dirs.map((i, index) => {
                                     return (<li key={index}>{i}{
                                         
-                                        index==dirs.length-1?"":
+                                        index===dirs.length-1?"":
                                         <span>{">"}</span>
                                     }</li>)
                                 })}

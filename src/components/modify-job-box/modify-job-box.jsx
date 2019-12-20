@@ -156,7 +156,6 @@ class ModifyJobBox extends React.PureComponent{
     }
     render() {
         const {
-            jobItem,
             onClose
         } = this.props
         const dom = (

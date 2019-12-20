@@ -1,8 +1,6 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
-import getCookieValue from '../utils/cookie'
-
 export default class FrontendAuth extends React.Component {
     render() {
         const { location, config } = this.props;

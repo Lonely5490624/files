@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 let ajax = axios.create({
-    baseURL: 'http://localhost:3333/api',
+    baseURL: 'http://192.168.1.98:3333/api',
     timeout: 10000
 })
 
