@@ -1,0 +1,39 @@
+.confirmCover{
+    position: fixed;
+    z-index: 20191220;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,.6);
+    .confirmBox{
+        position: absolute;
+        z-index: 20191222;
+        width: 300px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        border-radius: 5px;
+        padding-bottom: 10px;
+        .content{
+            text-align: center;
+            line-height: 1.5;
+            padding: 15px;
+        }
+        .control{
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            .btn{
+                border: 1px solid #eeeeee;
+                border-radius: 3px;
+                line-height: 28px;
+                width: 60px;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+    }
+}

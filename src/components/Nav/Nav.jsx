@@ -69,7 +69,7 @@ class Nav extends React.Component {
     }
     createTree(data, type) {
         let list = [];
-        data.menu.map((item, index) => {
+        data.menu.forEach((item, index) => {
             let next;
             if (item.menu) {
                 next = this.createTree(item, type);

@@ -6,10 +6,6 @@ import ajax from '../../utils/ajax'
 
 import styles from './file-list-share.module.scss'
 
-import UploadFile from '../upload-file/upload-file'
-import ModifyFileBox from '../modify-file-box/modify-file-box'
-import CreateDirBox from '../create-dir-box/create-dir-box'
-
 class FileListShare extends React.PureComponent{
     constructor(props) {
         super(props)
