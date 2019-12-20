@@ -33,6 +33,7 @@ class JobTree extends React.PureComponent{
     }
     async handleGetJobList() {
         let result = await ajax.get(`users/getJobList?dep_id=${this.props.depId}`)
+        
         if (result.code === 0) {
             this.setState({
                 jobList: result.data

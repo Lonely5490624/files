@@ -23,6 +23,7 @@ class UserListBox extends React.PureComponent{
     // 获取岗位下面的人员
     async getUserList() {
         let result = await ajax.get(`users/getUserStaff?job_id=${this.props.jobItem.job_id}`)
+        
         if (result.code === 0) {
             this.setState({
                 userList: result.data
@@ -34,7 +35,7 @@ class UserListBox extends React.PureComponent{
     }
     async openUserInfoBox(item){
         let result = await ajax.get(`users/getUserStaffInfo?uid=${item.uid}`)
-        console.log(result.data)
+        
         this.setState({
             depItem:result.data.depInfo,
             jobItem:result.data.jobInfo,

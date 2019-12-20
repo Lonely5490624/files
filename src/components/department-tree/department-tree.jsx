@@ -17,8 +17,11 @@ class DepartmentTree extends React.PureComponent{
             jobBox: false,
             modifyDepBox: false,
             currentDep: null
+            
         }
-
+        
+        /* let str = "{\"code\":0,\"message\":\"查询成功\",\"data\":[{\"dep_id\":270,\"par_id\":0,\"dep_name\":\"总部\",\"dep_dir\":\"/Users/lilong/Documents/中科思远/lxm-files/files/staff/1576754160000总部\",\"type\":1,\"address\":\"\",\"create_uid\":\"004c26d0-2137-11ea-b1c9-19ec08ea7d9d\",\"create_time\":\"2019-12-19T11:16:00.000Z\",\"update_uid\":null,\"update_time\":null,\"delete_uid\":null,\"delete_time\":null,\"is_delete\":0,\"children\":[{\"dep_id\":272,\"par_id\":270,\"dep_name\":\"技术部\",\"dep_dir\":\"/Users/lilong/Documents/中科思远/lxm-files/files/staff/1576754160000总部/1576754198000技术部\",\"type\":1,\"address\":\"\",\"create_uid\":\"004c26d0-2137-11ea-b1c9-19ec08ea7d9d\",\"create_time\":\"2019-12-19T11:16:38.000Z\",\"update_uid\":null,\"update_time\":null,\"delete_uid\":null,\"delete_time\":null,\"is_delete\":0,\"children\":[]}]},{\"dep_id\":271,\"par_id\":0,\"dep_name\":\"学校\",\"dep_dir\":\"/Users/lilong/Documents/中科思远/lxm-files/files/staff/1576754165000学校\",\"type\":1,\"address\":\"\",\"create_uid\":\"004c26d0-2137-11ea-b1c9-19ec08ea7d9d\",\"create_time\":\"2019-12-19T11:16:05.000Z\",\"update_uid\":null,\"update_time\":null,\"delete_uid\":null,\"delete_time\":null,\"is_delete\":0,\"children\":[]}]}"
+        console.log("ssssss",JSON.parse(str)) */
         bindAll(this, [
             'handleOpenAddDep',
             'handleCloseAddDep',

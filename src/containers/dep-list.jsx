@@ -16,6 +16,7 @@ export default class DepList extends React.PureComponent{
     }
     async getDepList() {
         let result = await ajax.get('users/getDepartment')
+        
         if (result.code === 0) {
             this.setState({
                 depList: result.data
