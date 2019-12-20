@@ -13,7 +13,7 @@ import DepartmentBox from '../components/department-box/department-box'
 
 import styles from '../styles/home.module.scss'
 
-class Home extends React.Component{
+class Home extends React.Component {
     constructor() {
         super()
         this.state = {
@@ -23,7 +23,7 @@ class Home extends React.Component{
                 menu: []
             },
             fileList: null,
-            dirs:["1","2","3"]
+            dirs: ["1", "2", "3"]
         }
         this.menu = []
         bindAll(this, [
@@ -38,13 +38,13 @@ class Home extends React.Component{
         ])
     }
     // 打开部门设置
-    handleShowDepartmnet () {
+    handleShowDepartmnet() {
         this.setState({
             departmentBox: true
         })
     }
     // 关闭部门设置
-    handleHideDepartmnet () {
+    handleHideDepartmnet() {
         this.setState({
             departmentBox: false
         })
@@ -59,7 +59,7 @@ class Home extends React.Component{
     // 获取分享给我的目录列表
     async handleGetShareDirList() {
         let result = await ajax.get('files/getShareDir')
-        if(result.code === 0) {
+        if (result.code === 0) {
             this.menu.push(...listToTree(result.data, true))
         }
     }
@@ -69,18 +69,18 @@ class Home extends React.Component{
         await this.props.setDirIsShare(isShare)
         const url = this.props.isShare ? `files/getShareFileWithDirId?dir_id=${item.id}` : `files/getFileWithDirId?dir_id=${item.id}`
         let result = await ajax.get(url);
-        let dirArr=[]
+        let dirArr = []
         console.log(item)
         /* console.log("item",item);
         console.log("this",this.menu); */
-        let arrs=[]
-        let getDir = (dataArr)=>{
-            dataArr.map((i)=>{
+        let arrs = []
+        let getDir = (dataArr) => {
+            dataArr.map((i) => {
 
-                if(item.dir_pid == i.id){
+                if (item.dir_pid == i.id) {
                     dirArr.push(i.name)
                 }
-                if(i.menu&&i.menu.length>0){
+                if (i.menu && i.menu.length > 0) {
                     getDir(i.menu)
                 }
                 arrs.push(i);
@@ -129,7 +129,7 @@ class Home extends React.Component{
         })
     }
     render() {
-        let {dirs} = this.state;
+        let { dirs } = this.state;
         return (
             <>
                 <div className={styles.home}>
@@ -137,6 +137,7 @@ class Home extends React.Component{
                         <h1>logo</h1>
                         <ul>
                             {this.state.depSet ? <li onClick={this.handleShowDepartmnet}>部门设置</li> : null}
+                            
                             <li onClick={this.handleLogout}>注销</li>
                         </ul>
                     </div>
@@ -144,9 +145,16 @@ class Home extends React.Component{
                         <Nav type={"fileTree"} data={this.state.dirList} onDirClick={this.handleClickDir} />
                         <div className={styles.contentMain}>
                             <div className={styles.dir}>
-                                {dirs.map((i,index)=>{
-                                return (<li key={index}>{i}<span>></span></li>)
+                                <h3>当前目录：</h3>
+                                <ul>
+                                {dirs.map((i, index) => {
+                                    return (<li key={index}>{i}{
+                                        
+                                        index==dirs.length-1?"":
+                                        <span>{">"}</span>
+                                    }</li>)
                                 })}
+                                </ul>
                             </div>
                             {
                                 this.props.isShare ? 

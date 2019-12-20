@@ -1,0 +1,45 @@
+.selectTree{
+    display: flex;
+    position: relative;
+    width: 100%;
+    input:read-only{
+        background: #FFF !important;
+    }
+    & > div{
+        position: absolute;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        background: #fff;
+        flex: 1;
+        max-height: 100px;
+        overflow-y: auto;
+        top: 33px;
+        border: 1px solid #eee;
+        ul{
+            margin-left: 10px;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            li{
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                label{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    input,em{
+                        display: flex;
+                        margin-right: 5px;
+                    }
+                   
+                }
+            label:hover em{
+                    color: #09c;
+                }
+                
+            }
+        }
+    }
+}

@@ -40,6 +40,7 @@ class User extends React.PureComponent{
     }
     async getDepList() {
         let result = await ajax.get('users/getDepartment')
+        
         if (result.code === 0) {
             this.setState({
                 depList: result.data
@@ -48,6 +49,7 @@ class User extends React.PureComponent{
     }
     async getJobList(dep_id) {
         let result = await ajax.get(`users/getJobList?dep_id=${dep_id}`)
+        
         if (result.code === 0) {
             this.setState({
                 jobList: result.data

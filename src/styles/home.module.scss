@@ -53,6 +53,25 @@
             flex-direction: column;
             .dir{
                 display: flex;
+                padding-bottom: 10px;
+                
+                h3,ul{
+                    display: flex;
+                    font-size: 16px;
+                    font-weight: normal;
+                }
+                ul{
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                }
+                li{
+                    display: flex;
+                    margin: 0 5px;
+                    span{
+                        margin-left: 5px;
+                    }
+                }
             }
         }
     }

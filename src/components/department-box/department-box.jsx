@@ -20,6 +20,7 @@ class DepartmentBox extends React.PureComponent{
     }
     async handleGetDirList() {
         let result = await ajax.get('users/getDepartment')
+       
         if (result.code === 0) {
             this.setState({
                 depList: result.data
