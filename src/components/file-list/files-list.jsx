@@ -168,6 +168,7 @@ class FileList extends React.PureComponent {
                                         <div className={styles.fileName}>{item.file_name}</div>
                                         {dirData.name == "收藏" ?
                                             <div className={styles.fileControl}>
+                                                <div className={classnames(styles.fileBtn, styles.fileDownload)} onClick={this.handleDownloadFile.bind(this, item)}>下载</div>
                                                 <div className={classnames(styles.fileBtn, styles.fileCollect)} onClick={this.handleCollect.bind(this, item.file_id,"cancel")}>取消收藏</div>
                                             </div>
                                             :
