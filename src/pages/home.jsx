@@ -11,6 +11,7 @@ import FileList from '../components/file-list/files-list'
 import FileListShare from '../components/file-list-share/files-list-share'
 import DepartmentBox from '../components/department-box/department-box'
 import toast from '../components/toast/toast'
+import loading from '../components/loading/loading'
 
 import styles from '../styles/home.module.scss'
 
@@ -132,6 +133,12 @@ class Home extends React.Component {
     handleToast() {
         toast('删除失败')
     }
+    handleOpenloading() {
+        loading.open()
+        setTimeout(() => {
+            loading.close()
+        }, 3000);
+    }
     render() {
         let { dirs } = this.state;
         return (
@@ -142,6 +149,7 @@ class Home extends React.Component {
                         <ul>
                             {this.state.depSet ? <li onClick={this.handleShowDepartmnet}>部门设置</li> : null}
                             <li onClick={this.handleToast.bind(this)}>Toast</li>
+                            <li onClick={this.handleOpenloading.bind(this)}>Loading</li>
                             <li onClick={this.handleLogout}>注销</li>
                         </ul>
                     </div>
