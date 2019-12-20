@@ -16,7 +16,7 @@ class UserListBox extends React.PureComponent{
         bindAll(this,[
             'getUserList',
             'handleCloseAddUsers',
-            'handleCloseAddUsers'
+            'handleDoneAddUsers'
         ])
     }
     
