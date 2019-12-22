@@ -5,7 +5,8 @@ import bindAll from 'lodash.bindall'
 import styles from './create-user-box.module.scss'
 import ajax from '../../utils/ajax'
 import SelectTree from "../selectTree/selectTree"
-
+import toast from '../../components/toast/toast'
+import loading from '../../components/loading/loading'
 class CreateUserBox extends React.PureComponent {
     constructor() {
         super()
@@ -124,9 +125,14 @@ class CreateUserBox extends React.PureComponent {
         }
         
         const result = await ajax.post('users/modifyStaffInfo', params)
-        
+        loading.open()
         if (result.code === 0) {
+            loading.close()
+            toast("修改成功")
             this.props.onDone && this.props.onDone()
+        }else{
+            loading.close()
+            toast("修改失败")
         }
         
     }

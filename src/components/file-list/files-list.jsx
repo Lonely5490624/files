@@ -59,7 +59,7 @@ class FileList extends React.PureComponent {
     }
     // 关闭开新建目录的弹窗
     handleCloseCreateDir() {
-        console.log("aaaaaa",this.props.uploadDone)
+       
         this.props.refreDir()
         this.setState({
             isRename:false,

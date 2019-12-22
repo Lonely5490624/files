@@ -243,11 +243,15 @@ class Home extends React.Component {
         if(isPass){
            
             let res = await ajax.post('users/modifyPwd',{oldPassword:curPwd,newPassword:newPwd,newPassword2:confirmPwd});
+            loading.open()
             if(res.code!=0){
+                loading.close()
                 this.setState({
                     errConfirm:res.message
                 })
             }else if(res.code===0){
+                loading.close()
+                toast('修改密码成功')
                 this.setState({
                     pwdBoxToggle: false,
                     curPwd:"",
@@ -256,6 +260,7 @@ class Home extends React.Component {
                     errConfirm:''
                 })
             }
+            
             
         }
     }
