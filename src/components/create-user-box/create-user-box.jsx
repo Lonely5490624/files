@@ -19,7 +19,7 @@ class CreateUserBox extends React.PureComponent {
             nick_name: '',
             ID_card: '',
             depData: null,
-            jobValue: ''
+            job_id:''
         }
         bindAll(this, [
             'handleInputUsername',
@@ -77,17 +77,17 @@ class CreateUserBox extends React.PureComponent {
        
         let result = await ajax.get('users/getDepartment');
         let jobResult = await ajax.get(`users/getJobList?dep_id=${depItem.dep_id}`)
-
         if (isUpdate) {
             this.setState({
                 username: userInfo.username,
-                jobValue: userInfo.job_id,
+                job_id: userInfo.job_id,
                 job_number: userInfo.job_number,
                 phone_number: userInfo.phone_number,
                 true_name: userInfo.true_name,
                 nick_name: userInfo.nick_name,
                 ID_card: userInfo.ID_card,
                 depData: result.data,
+                dep_id: depItem.dep_id,
                 jobData: jobResult.data
             })
         }
@@ -99,7 +99,7 @@ class CreateUserBox extends React.PureComponent {
             password: this.state.password,
             dep_id: this.props.depItem.dep_id,
             job_id: this.props.jobItem.job_id,
-            job_number: this.state.job_number,
+           
             phone_number: this.state.phone_number,
             true_name: this.state.true_name,
             nick_name: this.state.nick_name,
@@ -113,11 +113,11 @@ class CreateUserBox extends React.PureComponent {
     }
     async handleUpdateUser(){
         const params = {
-            username: this.state.username,
+            
             password: this.state.password,
-            dep_id: this.props.depItem.dep_id,
-            job_id: this.props.jobItem.job_id,
-            job_number: this.state.job_number,
+            dep_id: this.state.dep_id,
+            job_id: this.state.job_id,
+           
             phone_number: this.state.phone_number,
             true_name: this.state.true_name,
             nick_name: this.state.nick_name,
@@ -141,14 +141,16 @@ class CreateUserBox extends React.PureComponent {
         ajax.get(`users/getJobList?dep_id=${item.dep_id}`).then(res=>{
             this.setState({
                 jobData:res.data,
-                dep_id:res.data.dep_id
+                dep_id:item.dep_id
             })
         })
     }
     selectJob(e) {
+    
         this.setState({
-            jobValue: e.target.value
+            job_id: Number(e.target.value)
         });
+        
     }
     render() {
         const {
@@ -157,7 +159,7 @@ class CreateUserBox extends React.PureComponent {
             onClose,
             isUpdate
         } = this.props
-        let { depData, jobData, jobValue } = this.state;
+        let { depData, jobData, job_id } = this.state;
 
         const dom = (
             <div className={styles.cover}>
@@ -166,7 +168,7 @@ class CreateUserBox extends React.PureComponent {
                         <div className={styles.formItem}>
                             <div className={styles.formItemLabel}>用户名</div>
                             <div className={styles.formItemInput}>
-                                <input type="text" placeholder="请输入用户名" value={this.state.username} onChange={this.handleInputUsername} />
+                                <input type="text" disabled={isUpdate} placeholder="请输入用户名" value={this.state.username} onChange={this.handleInputUsername} />
                             </div>
                         </div>
                         <div className={styles.formItem}>
@@ -191,7 +193,7 @@ class CreateUserBox extends React.PureComponent {
                             <div className={styles.formItemInput}>
                                 {
                                     isUpdate ?
-                                        <select onChange={this.selectJob.bind(this)} value={jobValue}>
+                                        <select onChange={this.selectJob.bind(this)} value={job_id}>
                                             {jobData && jobData.length > 0 ? jobData.map((item, index) => {
                                                 return (<option key={index} value={item.job_id}>{item.job_name}</option>)
                                             }) : null}
@@ -204,7 +206,7 @@ class CreateUserBox extends React.PureComponent {
                         <div className={styles.formItem}>
                             <div className={styles.formItemLabel}>工号</div>
                             <div className={styles.formItemInput}>
-                                <input type="text" placeholder="请输入工号" value={this.state.job_number} onChange={this.handleInputJobNumber} />
+                                <input disabled type="text" placeholder="请输入工号" value={this.state.job_number} onChange={this.handleInputJobNumber} />
                             </div>
                         </div>
                         <div className={styles.formItem}>
