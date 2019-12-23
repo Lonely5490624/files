@@ -12,7 +12,7 @@ class CreateUserBox extends React.PureComponent {
         super()
         this.state = {
             username: '',
-            password: '1',
+            password: '',
             job_number: '',
             phone_number: '',
             true_name: '',
