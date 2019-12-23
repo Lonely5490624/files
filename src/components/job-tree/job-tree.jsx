@@ -141,7 +141,7 @@ class JobTree extends React.PureComponent{
                     null
                 }
                 {this.state.userBox && <UserListBox jobItem={this.state.currentJob} onClose={this.handleCloseUsers} />}
-                {this.state.modifyJobBox && <ModifyJobBox jobItem={this.state.currentJob} onClose={this.handleCloseModifyJob} />}
+                {this.state.modifyJobBox && <ModifyJobBox jobItem={this.state.currentJob} onClose={this.handleCloseModifyJob} onDone={this.handleGetJobList} />}
                 {this.state.addUserBox && <CreateUserBox depItem={depItem} jobItem={this.state.currentJob} onClose={this.handleCloseAddUsers} onDone={this.handleDoneAddUsers} />}
             </>            
         )
