@@ -4,6 +4,8 @@ import bindAll from 'lodash.bindall'
 
 import styles from './create-job-box.module.scss'
 import ajax from '../../utils/ajax'
+import loading from '../loading/loading'
+import toast from '../toast/toast'
 
 class CreateJobBox extends React.PureComponent{
     constructor() {
@@ -133,7 +135,10 @@ class CreateJobBox extends React.PureComponent{
             rename_file: this.state.isRenameFile,
             rename_dir: this.state.isRenameDir
         }
+        loading.open()
         let result = await ajax.post('users/addJob', params)
+        loading.close()
+        toast(result.message)
         if (result.code === 0) {
             this.props.onClose()
             this.props.onDone && this.props.onDone()

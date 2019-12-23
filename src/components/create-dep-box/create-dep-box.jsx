@@ -4,6 +4,8 @@ import bindAll from 'lodash.bindall'
 
 import styles from './create-dep-box.module.scss'
 import ajax from '../../utils/ajax'
+import loading from '../loading/loading'
+import toast from '../toast/toast'
 
 class CreateDepBox extends React.PureComponent{
     constructor() {
@@ -27,7 +29,10 @@ class CreateDepBox extends React.PureComponent{
             par_id: this.props.dep.dep_id,
             type: 1
         }
+        loading.open()
         let result = await ajax.post('users/addDepartment', params)
+        loading.close()
+        toast(result.message)
         if (result.code === 0) {
             this.props.onClose()
             this.props.onDone && this.props.onDone()

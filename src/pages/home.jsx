@@ -325,12 +325,12 @@ class Home extends React.Component {
                         <h1>logo</h1>
                         <ul>
                             {this.state.depSet ? <li onClick={this.handleShowDepartmnet}>部门设置</li> : null}
-                            <li onClick={this.handleToast.bind(this)}>Toast</li>
-                            <li onClick={this.handleOpenloading.bind(this)}>Loading</li>
+                            {/* <li onClick={this.handleToast.bind(this)}>Toast</li> */}
+                            {/* <li onClick={this.handleOpenloading.bind(this)}>Loading</li> */}
 
                             <li onClick={this.changePwdToggle.bind(this,true)}>修改密码</li>
 
-                            <li onClick={this.handleOpenConfirm.bind(this)}>Confirm</li>
+                            {/* <li onClick={this.handleOpenConfirm.bind(this)}>Confirm</li> */}
 
                             <li onClick={this.handleLogout}>注销</li>
                         </ul>
