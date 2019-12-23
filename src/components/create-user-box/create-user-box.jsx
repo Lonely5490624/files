@@ -81,6 +81,7 @@ class CreateUserBox extends React.PureComponent {
         if (isUpdate) {
             this.setState({
                 username: userInfo.username,
+                jobValue: userInfo.job_id,
                 job_number: userInfo.job_number,
                 phone_number: userInfo.phone_number,
                 true_name: userInfo.true_name,
@@ -190,7 +191,7 @@ class CreateUserBox extends React.PureComponent {
                             <div className={styles.formItemInput}>
                                 {
                                     isUpdate ?
-                                        <select onChange={this.selectJob.bind(this)} value={jobItem.job_id}>
+                                        <select onChange={this.selectJob.bind(this)} value={jobValue}>
                                             {jobData && jobData.length > 0 ? jobData.map((item, index) => {
                                                 return (<option key={index} value={item.job_id}>{item.job_name}</option>)
                                             }) : null}
