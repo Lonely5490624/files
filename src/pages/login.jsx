@@ -5,8 +5,8 @@ export default class Login extends React.Component{
     constructor() {
         super()
         this.state = {
-            username: 'lilong',
-            password: '123456'
+            username: '',
+            password: ''
         }
         this.handleInputUsername = this.handleInputUsername.bind(this)
         this.handleInputPassword = this.handleInputPassword.bind(this)
