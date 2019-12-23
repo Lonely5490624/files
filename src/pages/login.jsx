@@ -1,6 +1,7 @@
 import React from 'react'
 import ajax from '../utils/ajax'
-
+import toast from "../components/toast/toast";
+import loading from "../components/loading/loading"
 export default class Login extends React.Component{
     constructor() {
         super()
@@ -27,12 +28,23 @@ export default class Login extends React.Component{
             username: this.state.username,
             password: this.state.password
         }
+        if(data.username == ""){
+            return toast("用户名不能为空","error")
+        }
+        if(data.password == ""){
+            return toast("密码不能为空","error")
+        }
+        loading.open()
         ajax.post('users/login', data)
             .then(res => {
                 if (res.code === 0) {
                     localStorage.setItem('token', res.data.token)
                     this.props.history.replace('/home')
+                    toast("登陆成功")
+                }else{
+                    toast(res.message,"error")
                 }
+                loading.close()
             })
     }
     render() {
