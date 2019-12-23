@@ -93,6 +93,7 @@ class DepartmentTree extends React.PureComponent{
         loading.close()
         if (result.code === 0) {
             toast('删除成功')
+            this.props.onDone && this.props.onDone()
         } else {
             toast(result.message, 'error')
         }
