@@ -85,14 +85,17 @@ class DepartmentTree extends React.PureComponent{
     }
     // 删除部门
     async handleDeleteDep(dep) {
+        let {refreDir} =this.props
         let params = {
             dep_id: dep.dep_id
         }
         loading.open()
         const result = await ajax.post('users/deleteDep', params)
         loading.close()
+        
         if (result.code === 0) {
             toast('删除成功')
+            refreDir()
             this.props.onDone && this.props.onDone()
         } else {
             toast(result.message, 'error')
@@ -109,7 +112,8 @@ class DepartmentTree extends React.PureComponent{
     render() {
         const {
             item,
-            onDone
+            onDone,
+            refreDir
         } = this.props
 
         return (
@@ -130,18 +134,18 @@ class DepartmentTree extends React.PureComponent{
                                 </div>
                                 {
                                     ele.children && ele.children.length ?
-                                    <DepartmentTree item={ele.children} onDone={onDone} /> :
+                                    <DepartmentTree item={ele.children} onDone={onDone} refreDir={refreDir}/> :
                                     null
                                 }
                             </div>
-                            <JobTree depItem={ele} depId={ele.dep_id} ref={this.createRef.bind(this)} />
+                            <JobTree depItem={ele} depId={ele.dep_id} ref={this.createRef.bind(this)} refreDir={refreDir}/>
                         </div>
                     )) :
                     null
                 }
-                {this.state.depBox && <CreateDepBox onClose={this.handleCloseAddDep} dep={this.state.currentDep} onDone={onDone} />}
-                {this.state.jobBox && <CreateJobBox onClose={this.handleCloseAddJob} dep={this.state.currentDep} onDone={this.handleOnDone.bind(this)} />}
-                {this.state.modifyDepBox && <ModifyDepBox onClose={this.handleCloseModifyDep} dep={this.state.currentDep} onDone={onDone} />}
+                {this.state.depBox && <CreateDepBox onClose={this.handleCloseAddDep} dep={this.state.currentDep} onDone={onDone} refreDir={refreDir}/>}
+                {this.state.jobBox && <CreateJobBox onClose={this.handleCloseAddJob} dep={this.state.currentDep} onDone={this.handleOnDone.bind(this)} refreDir={refreDir}/>}
+                {this.state.modifyDepBox && <ModifyDepBox onClose={this.handleCloseModifyDep} dep={this.state.currentDep} onDone={onDone} refreDir={refreDir}/>}
             </>
         )
     }

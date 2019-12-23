@@ -359,7 +359,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.state.departmentBox && <DepartmentBox onClose={this.handleHideDepartmnet} />}
+                {this.state.departmentBox && <DepartmentBox onClose={this.handleHideDepartmnet} refreDir={this.refreDir.bind(this)}/>}
             </>
         )
     }

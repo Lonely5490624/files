@@ -24,6 +24,7 @@ class CreateDepBox extends React.PureComponent{
         })
     }
     async handleCreateDir() {
+        let {refreDir} =this.props
         let params = {
             dep_name: this.state.dep_name,
             par_id: this.props.dep.dep_id,
@@ -34,6 +35,7 @@ class CreateDepBox extends React.PureComponent{
         loading.close()
         toast(result.message)
         if (result.code === 0) {
+            refreDir()
             this.props.onClose()
             this.props.onDone && this.props.onDone()
         }

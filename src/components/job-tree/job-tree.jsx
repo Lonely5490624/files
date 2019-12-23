@@ -97,6 +97,7 @@ class JobTree extends React.PureComponent{
     }
     // 删除岗位
     async handleDeleteJob(item) {
+        let {refreDir} = this.props
         confirm("确认删除？",async ()=>{
             const params = {
                 job_id: item.job_id
@@ -105,6 +106,7 @@ class JobTree extends React.PureComponent{
             const result = await ajax.post('users/deleteJob', params)
             if (result.code === 0) {
                 toast("删除成功")
+                refreDir();
                 this.handleGetJobList()
             }else{
                 toast(result.message,"error")
