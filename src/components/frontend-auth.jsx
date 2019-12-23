@@ -19,6 +19,9 @@ export default class FrontendAuth extends React.Component {
 
         if (token) {
             // 如果是登陆状态，想要跳转到登陆，重定向到主页
+            if (pathname === '/') {
+                return <Redirect to='/home' />
+            }
             if (pathname === '/login') {
                 return <Redirect to='/home' />
             } else {
@@ -32,6 +35,9 @@ export default class FrontendAuth extends React.Component {
             }
         } else {
             // 非登陆状态下，当路由合法时且需要权限校验时，跳转到登陆页面，要求登陆
+            if (pathname === '/') {
+                return <Redirect to='/login' />
+            }
             if (targetRouterConfig && targetRouterConfig.auth) {
                 return <Redirect to='/login' />
             } else {
