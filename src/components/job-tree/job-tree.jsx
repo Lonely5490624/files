@@ -6,7 +6,9 @@ import classnames from 'classnames'
 import UserListBox from '../user-list-box/user-list-box'
 import ModifyJobBox from '../modify-job-box/modify-job-box'
 import CreateUserBox from '../create-user-box/create-user-box'
-
+import confirm from "../../components/confirm/confirm";
+import toast from "../../components/toast/toast";
+import loading from '../../components/loading/loading'
 import styles from './job-tree.module.scss'
 
 class JobTree extends React.PureComponent{
@@ -95,13 +97,21 @@ class JobTree extends React.PureComponent{
     }
     // 删除岗位
     async handleDeleteJob(item) {
-        const params = {
-            job_id: item.job_id
-        }
-        const result = await ajax.post('users/deleteJob', params)
-        if (result.code === 0) {
-
-        }
+        confirm("确认删除？",async ()=>{
+            const params = {
+                job_id: item.job_id
+            }
+            loading.open()
+            const result = await ajax.post('users/deleteJob', params)
+            if (result.code === 0) {
+                toast("删除成功")
+                this.handleGetJobList()
+            }else{
+                toast(result.message,"error")
+            }
+            loading.close()
+        })
+        
     }
     componentDidMount() {
         this.handleGetJobList()

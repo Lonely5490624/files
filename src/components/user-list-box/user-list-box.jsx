@@ -4,7 +4,9 @@ import bindAll from 'lodash.bindall'
 import ajax from '../../utils/ajax'
 import CreateUserBox from '../create-user-box/create-user-box'
 import styles from './user-list-box.module.scss'
-
+import confirm from "../../components/confirm/confirm";
+import toast from "../../components/toast/toast";
+import loading from '../../components/loading/loading'
 class UserListBox extends React.PureComponent{
     constructor() {
         super()
@@ -44,13 +46,21 @@ class UserListBox extends React.PureComponent{
         })
     }
     async deleteUser(item){
-        const params = {
-            uid: item.uid
-        }
-        const result = await ajax.post('users/deleteUser', params)
-        if (result.code === 0) {
-
-        }
+        confirm("确认删除？",async ()=>{
+            loading.open()
+            const params = {
+                uid: item.uid
+            }
+            const result = await ajax.post('users/deleteUser', params)
+            if (result.code === 0) {
+                toast("删除成功")
+                this.getUserList()
+            }else{
+                toast(result.message,"error")
+            }
+            loading.close()
+        })
+        
     }
     handleCloseAddUsers() {
         this.setState({

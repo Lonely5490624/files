@@ -71,7 +71,7 @@ class CreateUserBox extends React.PureComponent {
     handleInputDep() {
 
     }
-    // 创建用户
+    
     async componentDidMount() {
         let { isUpdate, userInfo, depItem } = this.props;
        
@@ -92,7 +92,7 @@ class CreateUserBox extends React.PureComponent {
             })
         }
     }
-
+// 创建用户
     async handleCreateUser() {
         const params = {
             username: this.state.username,
@@ -108,7 +108,12 @@ class CreateUserBox extends React.PureComponent {
         
         const result = await ajax.post('users/regUserStaff', params)
         if (result.code === 0) {
+            loading.close()
+            toast("创建成功")
             this.props.onDone && this.props.onDone()
+        }else{
+            loading.close()
+            toast("创建失败")
         }
     }
     async handleUpdateUser(){
