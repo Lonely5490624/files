@@ -8,7 +8,8 @@ import styles from './file-list.module.scss'
 
 import UploadFile from '../upload-file/upload-file'
 import ModifyFileBox from '../modify-file-box/modify-file-box'
-import CreateDirBox from '../create-dir-box/create-dir-box'
+import CreateDirBox from '../create-dir-box/create-dir-box';
+import confirm from "../../components/confirm/confirm"
 
 class FileList extends React.PureComponent {
     constructor(props) {
@@ -17,7 +18,7 @@ class FileList extends React.PureComponent {
             uploadBox: false,
             modifyBox: false,
             currentFile: null,
-            isRename:false
+            isRename: false
         }
 
         bindAll(this, [
@@ -53,16 +54,16 @@ class FileList extends React.PureComponent {
     handleOpenCreateDir() {
 
         this.setState({
-            isRename:false,
+            isRename: false,
             createDir: true
         })
     }
     // 关闭开新建目录的弹窗
     handleCloseCreateDir() {
-       
+
         this.props.refreDir()
         this.setState({
-            isRename:false,
+            isRename: false,
             createDir: false
         })
     }
@@ -91,14 +92,14 @@ class FileList extends React.PureComponent {
         }
     }
     // 收藏文件
-    async handleCollect(id,type) {
+    async handleCollect(id, type) {
         const params = {
-            file_id: id+""
+            file_id: id + ""
         }
-        const result = type&&type=="cancel"?await ajax.post('files/cancelCollect', params):await ajax.post('files/collectFile', params)
+        const result = type && type == "cancel" ? await ajax.post('files/cancelCollect', params) : await ajax.post('files/collectFile', params)
         if (result.code === 0) {
-            
-            this.props.uploadDone && this.props.uploadDone(this.props.currentDir,type&&type=="cancel"?1:null)
+
+            this.props.uploadDone && this.props.uploadDone(this.props.currentDir, type && type == "cancel" ? 1 : null)
         }
     }
     // 删除文件
@@ -128,21 +129,28 @@ class FileList extends React.PureComponent {
     handleDownloadFile(item) {
         ajax.download(`files/fileDownload?file_id=${item.file_id}`)
     }
-    handleRename(){
+    handleRename() {
         this.setState({
-            isRename:true,
+            isRename: true,
             createDir: true
         })
     }
-    handleDeleteDir(){
-
+    handleDeleteDir(currentDir) {
+        confirm('如果目录下有其他文件，将也会被删除，确认删除吗?', this.delDir.bind(this, currentDir))
+    }
+    async delDir(currentDir) {
+        let res = await ajax.post('files/deleteDir', { dir_id: currentDir });
+        if(res.code===0){
+            this.props.refreDir()
+        }
     }
     render() {
         let {
             fileList,
-            dirData
+            dirData,
+            currentDir
         } = this.props
-        let {isRename} = this.state
+        let { isRename } = this.state
         return (
             <div className={styles.filePage}>
                 {
@@ -154,7 +162,7 @@ class FileList extends React.PureComponent {
                                 dirData && dirData.can_delete ? <button onClick={this.handleRename}>修改目录</button> : null
                             }
                             {
-                                dirData && dirData.can_delete ? <button onClick={this.handleDeleteDir}>删除目录</button> : null
+                                dirData && dirData.can_delete ? <button onClick={this.handleDeleteDir.bind(this, currentDir)}>删除目录</button> : null
                             }
                         </div> :
                         null
@@ -163,13 +171,13 @@ class FileList extends React.PureComponent {
                     fileList && fileList.length ?
                         <div className={styles.fileList}>
                             {
-                                fileList.map((item,i) => (
+                                fileList.map((item, i) => (
                                     <div className={styles.fileItem} key={i}>
                                         <div className={styles.fileName}>{item.file_name}</div>
                                         {dirData.name == "收藏" ?
                                             <div className={styles.fileControl}>
                                                 <div className={classnames(styles.fileBtn, styles.fileDownload)} onClick={this.handleDownloadFile.bind(this, item)}>下载</div>
-                                                <div className={classnames(styles.fileBtn, styles.fileCollect)} onClick={this.handleCollect.bind(this, item.file_id,"cancel")}>取消收藏</div>
+                                                <div className={classnames(styles.fileBtn, styles.fileCollect)} onClick={this.handleCollect.bind(this, item.file_id, "cancel")}>取消收藏</div>
                                             </div>
                                             :
                                             <div className={styles.fileControl}>

@@ -140,7 +140,6 @@ class Home extends React.Component {
         }
     }
     async handleRefreshFileList(id, type) {
-        
         let result = type ? await ajax.get('files/getCollectList') : await ajax.get(`files/getFileWithDirId?dir_id=${id}`);
         if (result.code === 0) {
             this.setState({
