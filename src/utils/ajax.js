@@ -1,10 +1,9 @@
 import axios from 'axios'
 
-const baseURL = 'http://47.103.138.57/api'
+const baseURL = 'http://lxmapi.zksyai.com/api'
 
 let ajax = axios.create({
-    baseURL,
-    timeout: 10000
+    baseURL
 })
 
 ajax.defaults.withCredentials = true
