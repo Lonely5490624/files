@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const baseURL = 'http://lxmapi.zksyai.com/api'
+const baseOrigin = 'http://lxmapi.zksyai.com'
+// const baseOrigin = 'http://192.168.1.98:3333'
+// const baseOrigin = 'http://localhost:3333'
+const baseURL = `${baseOrigin}/api`
 
 let ajax = axios.create({
     baseURL
@@ -46,4 +49,7 @@ ajax.download = function(url) {
     window.open(fullUrl)
 }
 
-export default ajax
+export{
+    ajax as default,
+    baseOrigin
+}

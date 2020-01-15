@@ -11,6 +11,8 @@ import ModifyFileBox from '../modify-file-box/modify-file-box'
 import CreateDirBox from '../create-dir-box/create-dir-box';
 import confirm from "../../components/confirm/confirm"
 
+import preview from '../../components/preview/preview'
+
 class FileList extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -129,6 +131,10 @@ class FileList extends React.PureComponent {
     handleDownloadFile(item) {
         ajax.download(`files/fileDownload?file_id=${item.file_id}`)
     }
+    // 预览文件
+    handleViewFile(item) {
+        preview(item)
+    }
     handleRename() {
         this.setState({
             isRename: true,
@@ -182,6 +188,7 @@ class FileList extends React.PureComponent {
                                             :
                                             <div className={styles.fileControl}>
                                                 <div className={classnames(styles.fileBtn, styles.fileDownload)} onClick={this.handleDownloadFile.bind(this, item)}>下载</div>
+                                                <div className={classnames(styles.fileBtn, styles.fileView)} onClick={this.handleViewFile.bind(this, item)}>预览</div>
                                                 <div className={classnames(styles.fileBtn, styles.fileModify)} onClick={this.handleOpenModifyBox.bind(this, item)}>重命名</div>
                                                 {item.is_share === 1 ?
                                                     <div className={classnames(styles.fileBtn, styles.fileShare)} onClick={this.handleCancelFileShare.bind(this, item.file_id)}>取消共享</div> :
